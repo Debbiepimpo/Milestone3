@@ -1856,18 +1856,19 @@ pre code {
 
 .form-control {
   display: block;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
+  width: 50%;
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.5;
   color: #495057;
-  background-color: #fff;
+  background-color: #f3df5f70;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border: 1px solid #a731e6;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  margin-left: 25%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5108,6 +5109,10 @@ a.badge-dark:focus, a.badge-dark.focus {
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
+  border-left-width: 1px;
+  margin-left: 50px; 
+  margin-right: 50px; 
+  top: 100px; 
 }
 
 .alert-heading {
@@ -5174,12 +5179,12 @@ a.badge-dark:focus, a.badge-dark.focus {
 
 .alert-info {
   color: #0c5460;
-  background-color: #d1ecf1;
-  border-color: #bee5eb;
+  background-color: #ecf1d1;
+  border-color: #debeeb;
 }
 
 .alert-info hr {
-  border-top-color: #abdde5;
+  border-top-color: #debeeb;
 }
 
 .alert-info .alert-link {
@@ -9758,6 +9763,7 @@ button.bg-dark:focus {
 
 .text-center {
   text-align: center !important;
+  
 }
 
 @media (min-width: 576px) {

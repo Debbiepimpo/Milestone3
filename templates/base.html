@@ -1,83 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" type="text/css" />
-    <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/stylish-portfolio.min.css')}}" type="text/css" />-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylish-portfolio.css')}}" type="text/css" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" type="text/css" />
-    <script src="https://kit.fontawesome.com/555d2c748a.js"></script>
-    <title>My cookbook</title>
-</head>
-<body>
-   
-    </nav>
-    <body id="page-top">
 
-  <!-- Navigation -->
-  <a class="menu-toggle rounded" href="#">
-    <i class="fas fa-bars"></i>
-  </a>
-  <nav id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-      <li class="sidebar-brand">
-        <a class="js-scroll-trigger" href="#">My Cookbook</a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="{{ url_for('index') }}">Home</a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="{{ url_for('login') }}">Login</a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="{{ url_for('recipes') }}">Recipes</a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a class="js-scroll-trigger" href="{{ url_for('favourites') }}">My Favourite Recipes</a>
-      </li>
-    </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" type="text/css" />
+  <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/stylish-portfolio.min.css')}}" type="text/css" />-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylish-portfolio.css')}}" type="text/css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" type="text/css" />
+  <script src="https://kit.fontawesome.com/555d2c748a.js"></script>
+  <title>My cookbook</title>
+</head>
+
+<body>
   </nav>
 
-  <!-- Header -->
-  <header class="masthead d-flex" style="background-image: url('../static/img/saraS.jpg')">
-    <div class="container text-center my-auto">
-      <h1 class="mb-1">MY COOKBOOK</h1>
-      <a class="btn btn-primary btn-xl js-scroll-trigger" href="{{ url_for('login') }}">Login/Register</a>
-    </div>
-    <div class="overlay"></div>
-  </header>
+  <body id="page-top">
 
-  <!-- About -->
-  <section class="content-section bg-light" id="about">
-    <div class="container text-center">
-      {% block content %}
-      {% endblock %}
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+    <i class="fas fa-bars"></i>
+  </a>
+    <nav id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+          <a class="js-scroll-trigger" href="{{ url_for('index')}}">My Cookbook</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="{{ url_for('index') }}">Home</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="{{ url_for('sign_in') }}">Login</a>
+        </li>
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="{{ url_for('recipes') }}">Recipes</a>
+        </li>
+        <!--This will display only when a user is logged-->
+        <!--{%if 'user' in session%}
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('add_recipe')}}">Add Recipe</a>
+        </li>
+        {% endif %}-->
+        <li class="sidebar-nav-item">
+          <a class="js-scroll-trigger" href="{{ url_for('favourites') }}">My Favourite Recipes</a>
+        </li>
+      </ul>
+      <!-----------------SEARCH will appear on all pages EXCEPT recipes-->
+     <!-- {% if request.path!='/recipes' %}
+      <form method="GET" action="{{url_for('recipes')}}" class="form-inline my-2 my-lg-0">
+        <input class="form-control-sm  mr-2" name="keyword" type="search" placeholder="Search" aria-label="Search" value="{{keyword if keyword }}">
+        <button class="btn btn-outline-light btn-sm my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      {%endif%}-->
+    </nav>
+    {% block content %} {% endblock %}
     </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer text-center">
-    <div class="container">
-      <p class="text-muted small mb-0">Copyright &copy; Debbiepimpo 2019</p>
-    </div>
-  </footer>
+    <!-- Footer -->
+    <footer class="footer text-center">
+      <div class="container">
+        <p class="text-muted small mb-0">Copyright &copy; Debbiepimpo 2019</p>
+      </div>
+    </footer>
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
-  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
-  <!-- Plugin JavaScript -->
-  <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <!-- Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
-  <!-- Custom scripts for this template -->
-  <script src="{{ url_for('static', filename='js/stylish-portfolio.min.js')}}"></script>
-    
-</body>
+    <!-- Custom scripts for this template -->
+    <script src="{{ url_for('static', filename='js/stylish-portfolio.min.js')}}"></script>
+
+  </body>
+
 </html>
