@@ -1,12 +1,16 @@
 /*-----WEBSITE TITLE----*/
+
 .mb-1 {
     color: #f5d011;
 }
+
 /*----SECTION HEADING----*/
+
 .section-heading {
     height: 85px;
-    box-shadow: -5px -8px 28px 8px rgba(138,72,224,1);
+    box-shadow: -5px -8px 28px 8px rgba(138, 72, 224, 1);
 }
+
 .section-heading-green {
     background-color: #b3ffe2;
 }
@@ -16,6 +20,7 @@
 }
 
 /*------TEXT-----*/
+
 .text-middle {
     padding-top: 22px;
     margin-bottom: 0px;
@@ -26,6 +31,7 @@
 }
 
 /*-----USER----*/
+
 .username-color {
     color: #f5d011 !important;
 }
@@ -36,4 +42,19 @@
     background-image: url({{recipe['image']}});
     background-size: cover;
     padding-top: 60%;
+}
+
+/*--------FORM----*/
+
+.form-row {
+    text-align: center;
+}
+
+.form-group {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.custom-select {
+    margin-left: 0px;
 }

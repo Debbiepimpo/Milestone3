@@ -2,6 +2,8 @@ import os
 from flask import Flask, render_template, redirect, request, url_for, session, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+from bson import json_util
+from bson.son.SON import RawBSONDocument
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -408,6 +410,7 @@ def insertrecipe():
     del recipes["ingredientQuantity[]"]
     del recipes["ingredientMeasurements[]"]
     del recipes["instructions"]
+    
     
     if form_allergies:
         del recipes["allergies[]"]

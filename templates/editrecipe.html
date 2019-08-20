@@ -14,14 +14,15 @@
 {%endif%}
 
 <form action="{{url_for('updaterecipe',recipe_id=recipe._id)}}" method="POST">
+     <h3 class="text-middle text-center">Edit This Recipe</h3>
     <!------------------------------------------------------------------TITLE-->
     <div class="form-row">
-        <div class="form-group col-12 col-md-4">
+        <div class="form-group col-12">
             <label for="recipeName">Recipe Name</label>
             <input type="text" class="form-control" value="{{recipes.recipeName if ('recipeName' in recipes) else (recipe.recipeName)}}" name="recipeName" id="recipeName" placeholder="Recipe Name" required>
         </div>
         <!---------------------------------------------------------------DIET-->
-        <div class="form-group col-12 col-md-4">
+        <div class="form-group col-12 col-md-6">
             <label for="diet">Diet</label>
             <select class="form-control custom-select" name="diet" id="diet">
                 {% for diet in _diet %}
@@ -34,7 +35,7 @@
             </select>
         </div>
         <!------------------------------------------------------------CUISINE-->
-        <div class="form-group col-12 col-md-4">
+        <div class="form-group col-12 col-md-6">
             <label for="cuisine">Cuisine</label>
             <select class="form-control custom-select" name="cuisine" id="cuisine">
                 {%for cuisine in _cuisine %}
@@ -49,7 +50,7 @@
     </div>
     <!------------------------------------------------------ALLERGENS SECTION-->
     <div class="form-group">
-        <h3 class="mt-2">Allergens <span class="text-muted"><small>(check all that apply)</small></span></h3>
+        <h3 class="text-middle text-center">Allergens <span class="text-muted"><small>(check all that apply)</small></span></h3>
         {% for allergy in _allergies %}
         <div class="form-check form-check-inline">
             {%if 'allergies' in recipes%}
@@ -60,15 +61,8 @@
         </div>
         {% endfor %}
     </div>
-    <!------------------------------------------------------SHORT DESCRIPTION-->
-    <h3 mt-2>Description</h3>
-    <div class="form-group">
-        {%if 'description' in recipes%}
-        <textarea class="form-control" name="description" placeholder="Add a short description(max 50 characters)" maxlength=50 rows="2">{{recipes['description'] if 'description' in recipes}}</textarea> {%else%}
-        <textarea class="form-control" name="description" placeholder="Add a short description(max 50 characters)" maxlength=50 rows="2">{{recipe.description if ('description' in recipe)}}</textarea> {%endif%}
-    </div>
     <!----------------------------------------------------INGREDIENTS SECTION-->
-    <h3 class="text-center mt-2">Ingredients</h3>
+    <h3 class="text-middle text-center">Ingredients</h3>
     {% for i in range(ingredient_length) %}
     <div class="row form-group">
         <div class="col-12 col-sm-8">
@@ -98,45 +92,45 @@
             </select>
         </div>
     </div>
-    {%endfor%}
+    {% endfor %}
     <div class="form-group clearfix mt-3">
-        <div class="float-right">
-            <button type="submit" class="btn btn-primary mr-3" name="submit" value="addIngredient"><i class="fas fa-plus mr-2"></i>Add</button>
+        <div class="float-center">
+            <button type="submit" class="btn btn-primary" name="submit" value="addIngredient"><i class="fas fa-plus mr-2"></i>Add</button>
             {% if ingredient_length>1 %}
-            <button type="submit" class="btn btn-primary btn-outline-dark" name="submit" value="delete_ingredient"><i class="fas fa-minus mr-2"></i>Delete</button>
+            <button type="submit" class="btn btn-primary" name="submit" value="del_ingredient"><i class="fas fa-minus mr-2"></i>Delete</button>
             {%endif%}
         </div>
     </div>
     <!------------------------------------------------------------------INSTRUCTIONS-->
-    <h3 class="text-center mt-2">Instructions</h3>
+    <h3 class="text-middle text-center">Instructions</h3>
     {% for i in range(instructions_length)%}
     <div class="form-group">
-        {%if 'instructions' in recipes%}
+        {% if 'instructions' in recipes%}
         <label for="instruction">Instruction {{i+1}}</label>
         <textarea class="form-control"  name="instructions" rows="2">{{recipes['instructions'][i] if recipes['instructions'][i]}}</textarea> 
-        {%elif 'instructions' in recipe %}
+        {% elif 'instructions' in recipe %}
         <label for="instruction">Instruction {{i+1}}</label>
         <textarea class="form-control"  name="instructions" rows="2">{{recipe['instructions'][i] if recipe['instructions'][i]}}</textarea> {%endif%}
     </div>
-    {%endfor%}
+    {% endfor %}
     <div class="form-group mt-3 clearfix">
-        <div class="float-right">
-            <button type="submit" class="btn btn-primary mr-3" name="submit" value="addInstruction"><i class="fas fa-plus mr-2"></i>Add</button>
+        <div class="float-center">
+            <button type="submit" class="btn btn-primary" name="submit" value="addInstruction"><i class="fas fa-plus mr-2"></i>Add</button>
             {% if instructions_length>1 %}
-            <button type="submit" class="btn btn-primary btn-outline-dark" name="submit" value="delete_instruction"><i class="fas fa-minus mr-2"></i>Delete</button>
+            <button type="submit" class="btn btn-primary" name="submit" value="del_instruction"><i class="fas fa-minus mr-2"></i>Delete</button>
             {%endif%}
         </div>
     </div>
     <!------------------------------------------------------------------IMAGE-->
-    <h3>Image<span class="text-muted"><small>(insert a valid link)</small></span></h3>
-    <div class="row form-group">
+    <h3 class="text-middle text-center">Image<span class="text-muted"><small>(insert a valid link)</small></span></h3>
+    <div class="form-group">
         <div class="col">
             <input type="url" class="form-control" value="{{recipes['image'] if 'image' in recipes else recipe.image}}" name="image">
             <small class="form-text text-muted">
-                If you leave this field blank a default image will be used automatically
+                 A default image will appear on the recipe if this field is empty.
             </small>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary float-right btn-submit-form" name="submit" value="submit">Update</button>
+    <button type="submit" class="btn btn-primary btn-lg float-center btn-submit-form" name="submit" value="submit">Update</button>
 </form>
 {% endblock %} {{recipes}}
