@@ -2,8 +2,6 @@ import os
 from flask import Flask, render_template, redirect, request, url_for, session, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from bson import json_util
-from bson.son.SON import RawBSONDocument
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -289,6 +287,45 @@ def updaterecipe(recipe_id):
     # Put the data into the dictionary
     recipes["ingredients"]=items
     recipes["instructions"]=form_instructions
+    
+    recipeName = request.form['recipeName']
+    recipe_diet = request.form['diet']
+    recipe_cuisine = request.form['cuisine']
+    allergy_name = request.form['allergy_name']
+    ingredientName = request.form['ingredientName']
+    ingredientQuantity = request.form['ingredientQuantity']
+    ingredientMeasurements = request.form['ingredientMeasurements']
+    instruction_1 = request.form['instruction']
+    image = request.form['recipe_image']
+    
+    
+    recipe_data = {
+        
+        'recipeName': recipeName,
+        'diet': recipe_diet,
+        'cuisine': recipe_cuisine,
+        'allergy_name': allergy_name,
+        'ingredients': {
+            ingredientName: {
+                'ingredientName': ingredientName
+            },
+            ingredientQuantity: {
+                'ingredientQuantity': ingredientQuantity
+            },
+            ingredientMeasurements: {
+                'ingredientMeasurements': ingredientMeasurements
+            }
+        },
+        'instructions': {
+            instruction_1:{
+                'instruction': instruction_1
+                 }
+            },
+        'image': image
+          
+    }
+    
+    
     if form_allergies:
         del recipes["allergies[]"]
         recipes["allergies"]=form_allergies
@@ -341,6 +378,18 @@ def updaterecipe(recipe_id):
     _measurements=mongo.db.measurements.find()
     measurements=[unit for unit in _measurements]
     
+    recipes = mongo.db.recipes
+    recipe.update( {'_id': ObjectId(recipe_id)},
+    {
+        'user':request.form.get('user'),
+        'image':request.form.get('recipe_image'),
+        'recipeName': request.form.get('recipeName'),
+        'allergy_name': request.form.get('allergy_name'),
+        'cuisine_name':request.form.get('cuisine_name'),
+        'ingredients': request.form.get('ingredientName, ingredientQuantity, ingredientMeasurements'),
+        'instructions':request.form.get('instructions')
+    })
+    
     return render_template('editrecipe.html',recipe=recipe,recipes=recipes,
                             _diet=diet,_cuisine=cuisine,
                             _allergies=allergies,measurements=measurements,
@@ -374,7 +423,7 @@ def insertrecipe():
     
     message=""
     keys=[] # It will store keys of empty fields
-    
+
     # This are the list from mongoDB
     _measurements=mongo.db.measurements.find()
     measurements=[measurement for measurement in _measurements]
@@ -411,6 +460,43 @@ def insertrecipe():
     del recipes["ingredientMeasurements[]"]
     del recipes["instructions"]
     
+    recipeName = request.form['recipeName']
+    recipe_diet = request.form['diet']
+    recipe_cuisine = request.form['cuisine']
+    allergy_name = request.form['allergy_name']
+    ingredientName = request.form['ingredientName']
+    ingredientQuantity = request.form['ingredientQuantity']
+    ingredientMeasurements = request.form['ingredientMeasurements']
+    instruction_1 = request.form['instruction']
+    image = request.form['recipe_image']
+    
+    
+    recipe_data = {
+        
+        'recipeName': recipeName,
+        'diet': recipe_diet,
+        'cuisine': recipe_cuisine,
+        'allergy_name': allergy_name,
+        'ingredients': {
+            ingredientName: {
+                'ingredientName': ingredientName
+            },
+            ingredientQuantity: {
+                'ingredientQuantity': ingredientQuantity
+            },
+            ingredientMeasurements: {
+                'ingredientMeasurements': ingredientMeasurements
+            }
+        },
+        'instructions': {
+            instruction_1:{
+                'instruction': instruction_1
+            },
+    },
+        'image': image
+    }
+    
+    #recipe_data.to_dict()
     
     if form_allergies:
         del recipes["allergies[]"]
@@ -421,6 +507,7 @@ def insertrecipe():
     recipes["ingredients"]=items
     recipes["instructions"]=form_instructions
     recipes["user"]=session['user']
+    
   
     if request.form.get('submit') == 'submit':
         
@@ -460,6 +547,7 @@ def insertrecipe():
         instructions -= 1 
     elif request.form.get('submit') == 'del_ingredient':  
         ingredients -= 1
+
  
     return render_template('addrecipe.html', instructions=instructions, form_instructions=form_instructions, recipes=recipes,
     ingredients=ingredients,measurements=measurements,_cuisine=cuisine, _diet=diet,
