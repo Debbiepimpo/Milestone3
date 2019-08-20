@@ -1,14 +1,21 @@
-
+/*-----WEBSITE TITLE----*/
 .mb-1 {
     color: #f5d011;
 }
-
-.section-heading-green {
+/*----SECTION HEADING----*/
+.section-heading {
     height: 85px;
-    background-color: #b3ffe2;
     box-shadow: -5px -8px 28px 8px rgba(138,72,224,1);
 }
+.section-heading-green {
+    background-color: #b3ffe2;
+}
 
+.section-heading-red {
+    background-color: #ea454f;
+}
+
+/*------TEXT-----*/
 .text-middle {
     padding-top: 22px;
     margin-bottom: 0px;
@@ -16,4 +23,17 @@
 
 .span-text {
     font-weight: 700;
+}
+
+/*-----USER----*/
+.username-color {
+    color: #f5d011 !important;
+}
+
+/*-----IMAGES-----*/
+
+.img-container {
+    background-image: url({{recipe['image']}});
+    background-size: cover;
+    padding-top: 60%;
 }

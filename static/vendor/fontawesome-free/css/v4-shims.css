@@ -86,11 +86,11 @@
 .fa.fa-video-camera:before {
   content: "\f03d"; }
 
-.fa.fa-picture-o {
+.fa.fa-image-o {
   font-family: 'Font Awesome 5 Free';
   font-weight: 400; }
 
-.fa.fa-picture-o:before {
+.fa.fa-image-o:before {
   content: "\f03e"; }
 
 .fa.fa-photo {
@@ -449,7 +449,7 @@
 .fa.fa-lightbulb-o:before {
   content: "\f0eb"; }
 
-.fa.fa-exchange:before {
+.fa.fa-excludedhange:before {
   content: "\f362"; }
 
 .fa.fa-cloud-download:before {
@@ -908,7 +908,7 @@
   font-family: 'Font Awesome 5 Brands';
   font-weight: 400; }
 
-.fa.fa-stack-exchange {
+.fa.fa-stack-excludedhange {
   font-family: 'Font Awesome 5 Brands';
   font-weight: 400; }
 
@@ -1087,11 +1087,11 @@
 .fa.fa-file-word-o:before {
   content: "\f1c2"; }
 
-.fa.fa-file-excel-o {
+.fa.fa-file-excludedel-o {
   font-family: 'Font Awesome 5 Free';
   font-weight: 400; }
 
-.fa.fa-file-excel-o:before {
+.fa.fa-file-excludedel-o:before {
   content: "\f1c3"; }
 
 .fa.fa-file-powerpoint-o {
@@ -1115,11 +1115,11 @@
 .fa.fa-file-photo-o:before {
   content: "\f1c5"; }
 
-.fa.fa-file-picture-o {
+.fa.fa-file-image-o {
   font-family: 'Font Awesome 5 Free';
   font-weight: 400; }
 
-.fa.fa-file-picture-o:before {
+.fa.fa-file-image-o:before {
   content: "\f1c5"; }
 
 .fa.fa-file-archive-o {

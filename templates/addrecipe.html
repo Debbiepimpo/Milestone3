@@ -1,0 +1,119 @@
+{% extends 'base.html'%} {% block content %}
+<div class="section-heading section-heading-red">
+    <h3 class="text-middle text-center">Add New Recipe</h3>
+</div>
+{%if message%}
+<div class="alert alert-danger" role="alert">
+ <p><i class="fas fa-excludedlamation mr-2"></i>{{message}}</p>
+ <hr>
+    {%for key in keys%}
+       <span class="mr-2"><strong>{{key}}</strong></span>
+    {%endfor%}
+</div>
+{%endif%}
+
+
+<form action="{{url_for('insertrecipe')}}" method="POST">
+    <!------------------------------------------------------------------Recipe Name-->
+    <div class="form-row">
+        <div class="form-group col-12 col-md-4">
+            <label for="recipeName">Recipe Name</label>
+            <input type="text" class="form-control" value="{{recipes.recipeName}}" name="recipeName" id="recipeName" placeholder="Recipe Name">
+        </div>
+        <!---------------------------------------------------------------DIET-->
+        <div class="form-group col-12 col-md-4">
+            <label for="diet">Choose Diet</label>
+            <select class="form-control custom-select " name="diet" id="diet">
+                <option selected disabled>Choose diet</option>
+                {% for diet in _diet %}
+                <option value="{{diet.diet_name}}" {{"selected" if (('diet' in recipes)) and (recipes['diet']== diet.diet_name )}}>{{diet.diet_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!------------------------------------------------------------CUISINE-->
+        <div class="form-group col-12 col-md-4">
+            <label for="cuisine">Cuisine</label>
+            <select class="form-control custom-select " name="cuisine" id="cuisine">
+                <option selected disabled>Choose Cuisine</option>
+                {%for cuisine in _cuisine %}
+                <option value="{{cuisine.cuisine_name}}" {{"selected" if (('cuisine' in recipes)) and (recipes['cuisine']== cuisine.cuisine_name )}}>{{cuisine.cuisine_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <!------------------------------------------------------ALLERGENS -->
+    <div class="form-group">
+        <h3 class="mt-2">Allergens <span class="text-muted"><small>(check all that apply)</small></span></h3>
+        {% for allergy in _allergies %}
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="allergies[]" value="{{allergy.allergy_name}}" {{ 'checked' if allergy.allergy_name in recipes[ 'allergies']}}>
+            <label class="form-check-label" for="allergies">{{allergy.allergy_name}}</label>
+        </div>
+        {% endfor %}
+    </div>
+    <!------------------------------------------------------QUICK DESCRIPTION-->
+    <h3 >Description</h3>
+    <div class="form-group">
+        <textarea class="form-control" name="description" placeholder="Add a short description(max 100 characters)" maxlength=100 rows="2">{{recipes['description'] if ('description' in recipes)}}</textarea>
+    </div>
+    <!----------------------------------------------------INGREDIENTS-->
+    <h3 class="text-center mt-2">Ingredients</h3>
+    {% for i in range(ingredients) %}
+    <div class="form-row">
+        <div class="form-group col-12 col-sm-8">
+            <label for="ingredientName">Ingredient</label>
+            <input type="text" class="form-control" value="{{recipes['ingredients'][i]['name'] if (('ingredients' in recipes)) and (recipes['ingredients'][i])}}" id="ingredientName-{{i}}" name="ingredientName[]" placeholder="Ingredient Name">
+        </div>
+        <div class="form-group col-6 col-sm-2">
+            <label for="ingredientQuantity">Quantity</label>
+            <input type="text" instruction="0.01" min="0" class="form-control" value="{{recipes['ingredients'][i]['quantity'] if (('ingredients' in recipes)) and (recipes['ingredients'][i])}}" name="ingredientQuantity[]" placeholder="Quantity">
+        </div>
+        <div class="form-group col-6 col-sm-2">
+            <label for="ingredientMeasurement">Measurement</label>
+            <select class="form-control" recipeName="ingredientMeasurement" name="ingredientMeasurements[]">
+                {% for measurement in measurements %}
+                    <option {{'selected' if (('ingredients' in recipes)) and (recipes['ingredients'][i]) and (recipes['ingredients'][i]['measurements'] == measurement.measurement_name)}}>{{measurement.measurement_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="form-group clearfix mt-3">
+        <div class="float-right">
+        <button type="submit" class="btn btn-primary mr-3" name="submit" value="addIngredient"><i class="fas fa-plus mr-2"></i>Add</button>
+        {% if ingredients>1 %}
+        <button type="submit" class="btn btn-primary btn-outline-dark" name="submit" value="del_ingredient"><i class="fas fa-minus mr-2"></i>Delete</button>
+        {%endif%}
+        </div>
+    </div>
+    <!------------------------------------------------------------------INSTRUCTIONS-->
+    <h3 class="text-center mt-2">Instructions</h3>
+    {% for i in range(instructions) %}
+    <div class="form-group">
+        <label for="instruction">Instruction {{i+1}}</label>
+        <textarea class="form-control" name="instructions" rows="2">{{recipes['instructions'][i] if (('instructions' in recipes) and (recipes['instructions'][i]))}}</textarea>
+    </div>
+    {% endfor %}
+    <div class="form-group clearfix mt-3">
+        <div class="float-right">
+        <button type="submit" class="btn btn-primary mr-3" name="submit" value="addInstruction"><i class="fas fa-plus mr-2"></i>Add</button>
+        {% if instructions>1 %}
+        <button type="submit" class="btn btn-primary btn-outline-dark" name="submit" value="del_instruction"><i class="fas fa-minus mr-2"></i>Delete</button>
+        {% endif %}
+        </div>
+    </div>
+    <!------------------------------------------------------------------IMAGE-->
+    <h3>Image<span class="text-muted"><small>(insert a valid link)</small></span></h3>
+    <div class="row form-group">
+        <div class="col">
+            <input type="url" class="form-control" value="{% if ('image' in recipes) %} {{recipes['image']}} {%endif%}" name="image">
+             <small class="form-text text-muted">
+                If you leave this field blank a default image will be used automatically
+            </small>
+        </div>
+    </div>
+    <div class="form-group clearfix">
+        <button type="submit" class="btn btn-primary float-right btn-submit-form" name="submit" value="submit">Submit</button>
+    </div>
+</form>
+{% endblock %}

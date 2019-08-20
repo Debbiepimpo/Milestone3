@@ -1,0 +1,45 @@
+{% extends 'base.html'%} {% block content %}
+<div class="section-heading section-heading-red">
+    <h3 class="text-middle text-center">Welcome</h3>
+</div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class=flashes>
+    {% for message in messages %}
+     <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <span><i class="fas fa-check mr-2"></i><strong>{{message}}</strong></span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+<!--------------------------------------------------------------------WELCOME MESSAGE-->
+<section class="section__banner mt-5">
+<div class="row">
+    <div class="col-sm-12 col-md-8">
+        <img class="img-fluid" alt="Food" src="http://sozkibris.com/wp-content/uploads/2017/10/3dbf0726e1dc41349d0.jpg">
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <h3 class="section__heading--pink">Welcome, <span class="username-color"><strong>{{session['user']}}</strong></span></h3>
+        <p> Welcome to your own page, here you can share your own recipes with all the users and getting mor ideas from new recipes! In here you can add, store, edit and view your favourite recipes. Enjoy your new recipe storage website!</p>
+    </div>
+</div>
+</section>
+<!-------------------------------------------------------------Latest Recipes-->
+<section class="mt-5">
+<h3 class="section__heading--darkgreen text-center">New Recipes</h3>
+<div class="row">
+    {% for recipe in recipes %}
+    <div class="col-md-6 col-lg-3">
+            <div class="img-container" style="background-image: url({{recipe['image']}}); background-size: cover; padding-top: 60%;"> </div>
+        <h6 class="recipe-card text-truncate">{{recipe['recipeName']}}</h6>
+       <!--{{recipe._id.generation_time}}-->
+        </a>
+    </div>    
+    {%endfor%}
+</div>
+</section>
+{% endblock %}

@@ -1442,16 +1442,16 @@ readers do not read off random characters that represent icons */
 .fa-evernote:before {
   content: "\f839"; }
 
-.fa-exchange-alt:before {
+.fa-excludedhange-alt:before {
   content: "\f362"; }
 
-.fa-exclamation:before {
+.fa-excludedlamation:before {
   content: "\f12a"; }
 
-.fa-exclamation-circle:before {
+.fa-excludedlamation-circle:before {
   content: "\f06a"; }
 
-.fa-exclamation-triangle:before {
+.fa-excludedlamation-triangle:before {
   content: "\f071"; }
 
 .fa-expand:before {
@@ -1550,7 +1550,7 @@ readers do not read off random characters that represent icons */
 .fa-file-download:before {
   content: "\f56d"; }
 
-.fa-file-excel:before {
+.fa-file-excludedel:before {
   content: "\f1c3"; }
 
 .fa-file-export:before {
@@ -3536,7 +3536,7 @@ readers do not read off random characters that represent icons */
 .fa-squarespace:before {
   content: "\f5be"; }
 
-.fa-stack-exchange:before {
+.fa-stack-excludedhange:before {
   content: "\f18d"; }
 
 .fa-stack-overflow:before {

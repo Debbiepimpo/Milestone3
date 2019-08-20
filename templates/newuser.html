@@ -1,5 +1,6 @@
 {%extends 'base.html'%}
 {%block content%}
+<div class="section heading section-heading-green"><h3 class="text-middle text-center">Register</h3></div>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
@@ -12,21 +13,20 @@
     </div>
 </div>
 {% endfor %} {% endif %} {% endwith %}
-<div class="section-heading-green"><h3 class="text-middle text-center">Register</h3></div>
 <form class="mt-5 form--login text-center" action="{{url_for('register')}}" method="POST">
     <div class="form-group">
         <label for="user">Username</label>
         <input type="text" class="form-control" value="" name="user" placeholder="Username" required>
     </div>
     <div class="form-group">
-        <label for="title">Password</label>
+        <label for="recipeName">Password</label>
         <input type="password" class="form-control" value="" name="password" placeholder="Password" required>
     </div>
     <div class="mt-4 clearfix">
     <button type="submit" class="btn btn-primary float-center" name="submit" value="submit">Register</button>
     </div>
 </form>
-<p class="mt-3 text-center"> Already registered? <a class="new_user" href="{{url_for('sign_in')}}"><span class="span-text">Login</span></a></p>
+<p class="mt-3 text-center"> Already registered? <a class="newuser" href="{{url_for('sign_in')}}"><span class="span-text">Login</span></a></p>
 <div class="mt-4 alert alert-info" role="alert">
     <div class=flashes>
         <strong>Your Username and Password on this website are <span class="font-weight-bold text-danger">NOT ENCRYPTED</span>, and this info it will be used only for the project purposes. 

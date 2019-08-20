@@ -46,7 +46,7 @@
 .icon-minus,
 .icon-close,
 .icon-event,
-.icon-exclamation,
+.icon-excludedlamation,
 .icon-organization,
 .icon-trophy,
 .icon-screen-smartphone,
@@ -85,7 +85,7 @@
 .icon-present,
 .icon-playlist,
 .icon-pin,
-.icon-picture,
+.icon-image,
 .icon-handbag,
 .icon-globe-alt,
 .icon-globe,
@@ -320,7 +320,7 @@
 .icon-event:before {
   content: "\e619";
 }
-.icon-exclamation:before {
+.icon-excludedlamation:before {
   content: "\e617";
 }
 .icon-organization:before {
@@ -437,7 +437,7 @@
 .icon-pin:before {
   content: "\e031";
 }
-.icon-picture:before {
+.icon-image:before {
   content: "\e032";
 }
 .icon-handbag:before {

@@ -2035,15 +2035,15 @@
   }
 
   function getViewportOffsetRectRelativeToArtbitraryNode(element) {
-    var excludeScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var excludedScroll = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
     var html = element.ownerDocument.documentElement;
     var relativeOffset = getOffsetRectRelativeToArbitraryNode(element, html);
     var width = Math.max(html.clientWidth, window.innerWidth || 0);
     var height = Math.max(html.clientHeight, window.innerHeight || 0);
 
-    var scrollTop = !excludeScroll ? getScroll(html) : 0;
-    var scrollLeft = !excludeScroll ? getScroll(html, 'left') : 0;
+    var scrollTop = !excludedScroll ? getScroll(html) : 0;
+    var scrollLeft = !excludedScroll ? getScroll(html, 'left') : 0;
 
     var offset = {
       top: scrollTop - relativeOffset.top + relativeOffset.marginTop,
@@ -2624,12 +2624,12 @@
    */
   function setStyles(element, styles) {
     Object.keys(styles).forEach(function (prop) {
-      var unit = '';
-      // add unit if the value is numeric and is one of the following
+      var measurement = '';
+      // add measurement if the value is numeric and is one of the following
       if (['width', 'height', 'top', 'right', 'bottom', 'left'].indexOf(prop) !== -1 && isNumeric(styles[prop])) {
-        unit = 'px';
+        measurement = 'px';
       }
-      element.style[prop] = styles[prop] + unit;
+      element.style[prop] = styles[prop] + measurement;
     });
   }
 
@@ -2811,7 +2811,7 @@
     var left = void 0,
         top = void 0;
     if (sideA === 'bottom') {
-      // when offsetParent is <html> the positioning is relative to the bottom of the screen (excluding the scrollbar)
+      // when offsetParent is <html> the positioning is relative to the bottom of the screen (excludedluding the scrollbar)
       // and not the bottom of the html element
       if (offsetParent.nodeName === 'HTML') {
         top = -offsetParent.clientHeight + offsets.bottom;
@@ -3163,11 +3163,11 @@
   }
 
   /**
-   * Converts a string containing value + unit into a px value number
+   * Converts a string containing value + measurement into a px value number
    * @function
    * @memberof {modifiers~offset}
    * @private
-   * @argument {String} str - Value + unit string
+   * @argument {String} str - Value + measurement string
    * @argument {String} measurement - `height` or `width`
    * @argument {Object} popperOffsets
    * @argument {Object} referenceOffsets
@@ -3175,19 +3175,19 @@
    * Value in pixels, or original string if no values were extracted
    */
   function toValue(str, measurement, popperOffsets, referenceOffsets) {
-    // separate value from unit
+    // separate value from measurement
     var split = str.match(/((?:\-|\+)?\d*\.?\d*)(.*)/);
     var value = +split[1];
-    var unit = split[2];
+    var measurement = split[2];
 
     // If it's not a number it's an operator, I guess
     if (!value) {
       return str;
     }
 
-    if (unit.indexOf('%') === 0) {
+    if (measurement.indexOf('%') === 0) {
       var element = void 0;
-      switch (unit) {
+      switch (measurement) {
         case '%p':
           element = popperOffsets;
           break;
@@ -3199,18 +3199,18 @@
 
       var rect = getClientRect(element);
       return rect[measurement] / 100 * value;
-    } else if (unit === 'vh' || unit === 'vw') {
+    } else if (measurement === 'vh' || measurement === 'vw') {
       // if is a vh or vw, we calculate the size based on the viewport
       var size = void 0;
-      if (unit === 'vh') {
+      if (measurement === 'vh') {
         size = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
       } else {
         size = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
       }
       return size / 100 * value;
     } else {
-      // if is an explicit pixel unit, we get rid of the unit and keep the value
-      // if is an implicit unit, it's px, and we return just the value
+      // if is an explicit pixel measurement, we get rid of the measurement and keep the value
+      // if is an implicit measurement, it's px, and we return just the value
       return value;
     }
   }
@@ -3255,9 +3255,9 @@
     var splitRegex = /\s*,\s*|\s+/;
     var ops = divider !== -1 ? [fragments.slice(0, divider).concat([fragments[divider].split(splitRegex)[0]]), [fragments[divider].split(splitRegex)[1]].concat(fragments.slice(divider + 1))] : [fragments];
 
-    // Convert the values with units to absolute pixels to allow our computations
+    // Convert the values with measurements to absolute pixels to allow our computations
     ops = ops.map(function (op, index) {
-      // Most of the units rely on the orientation of the popper
+      // Most of the measurements rely on the orientation of the popper
       var measurement = (index === 1 ? !useHeight : useHeight) ? 'height' : 'width';
       var mergeWithPrevious = false;
       return op
@@ -3354,7 +3354,7 @@
     }
 
     // NOTE: DOM access here
-    // resets the popper's position so that the document size can be calculated excluding
+    // resets the popper's position so that the document size can be calculated excludedluding
     // the size of the popper element itself
     var transformProp = getSupportedPropertyName('transform');
     var popperStyles = data.instance.popper.style; // assignment to help minification
@@ -3546,12 +3546,12 @@
     /**
      * The `offset` modifier can shift your popper on both its axis.
      *
-     * It accepts the following units:
-     * - `px` or unit-less, interpreted as pixels
+     * It accepts the following measurements:
+     * - `px` or measurement-less, interpreted as pixels
      * - `%` or `%r`, percentage relative to the length of the reference element
      * - `%p`, percentage relative to the length of the popper element
-     * - `vw`, CSS viewport width unit
-     * - `vh`, CSS viewport height unit
+     * - `vw`, CSS viewport width measurement
+     * - `vh`, CSS viewport height measurement
      *
      * For length is intended the main axis relative to the placement of the popper.<br />
      * This means that if the placement is `top` or `bottom`, the length will be the
@@ -3561,7 +3561,7 @@
      * as `String` divided by a comma or one (or more) white spaces.<br />
      * The latter is a deprecated method because it leads to confusion and will be
      * removed in v2.<br />
-     * Additionally, it accepts additions and subtractions between different units.
+     * Additionally, it accepts additions and subtractions between different measurements.
      * Note that multiplications and divisions aren't supported.
      *
      * Valid examples are:
@@ -3712,7 +3712,7 @@
        * @prop {String|HTMLElement} boundariesElement='viewport'
        * The element which will define the boundaries of the popper position.
        * The popper will never be placed outside of the defined boundaries
-       * (except if `keepTogether` is enabled)
+       * (excludedept if `keepTogether` is enabled)
        */
       boundariesElement: 'viewport'
     },

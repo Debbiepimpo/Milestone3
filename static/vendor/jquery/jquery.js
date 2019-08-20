@@ -40,7 +40,7 @@
 } )( typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
 
 // Edge <= 12 - 13+, Firefox <=18 - 45+, IE 10 - 11, Safari 5.1 - 9+, iOS 6 - 9.1
-// throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
+// throw excludedeptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
 // arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be common
 // enough that all such attempts are guarded in a try block.
 "use strict";
@@ -753,7 +753,7 @@ function Sizzle( selector, context, results, seed ) {
 		if ( documentIsHTML ) {
 
 			// If the selector is sufficiently simple, try using a "get*By*" DOM method
-			// (excepting DocumentFragment context, where the methods don't exist)
+			// (excludedepting DocumentFragment context, where the methods don't exist)
 			if ( nodeType !== 11 && (match = rquickExpr.exec( selector )) ) {
 
 				// ID selector
@@ -1120,7 +1120,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 
 	// Support: IE<8
 	// Verify that getAttribute really returns attributes and not properties
-	// (excepting IE8 booleans)
+	// (excludedepting IE8 booleans)
 	support.attributes = assert(function( el ) {
 		el.className = "i";
 		return !el.getAttribute("className");
@@ -1349,7 +1349,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			// on a disconnected node (IE 9)
 			support.disconnectedMatch = matches.call( el, "*" );
 
-			// This should fail with an exception
+			// This should fail with an excludedeption
 			// Gecko does not error, returns false instead
 			matches.call( el, "[s!='']:x" );
 			rbuggyMatches.push( "!=", pseudos );
@@ -1364,7 +1364,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 	hasCompare = rnative.test( docElem.compareDocumentPosition );
 
 	// Element contains another
-	// Purposefully self-exclusive
+	// Purposefully self-excludedlusive
 	// As in, an element does not contain itself
 	contains = hasCompare || rnative.test( docElem.contains ) ?
 		function( a, b ) {
@@ -1623,7 +1623,7 @@ getText = Sizzle.getText = function( elem ) {
 	} else if ( nodeType === 3 || nodeType === 4 ) {
 		return elem.nodeValue;
 	}
-	// Do not include comment or processing instruction nodes
+	// Do not include comment or processing step nodes
 
 	return ret;
 };
@@ -1695,7 +1695,7 @@ Expr = Sizzle.selectors = {
 		},
 
 		"PSEUDO": function( match ) {
-			var excess,
+			var excludedess,
 				unquoted = !match[6] && match[2];
 
 			if ( matchExpr["CHILD"].test( match[0] ) ) {
@@ -1706,16 +1706,16 @@ Expr = Sizzle.selectors = {
 			if ( match[3] ) {
 				match[2] = match[4] || match[5] || "";
 
-			// Strip excess characters from unquoted arguments
+			// Strip excludedess characters from unquoted arguments
 			} else if ( unquoted && rpseudo.test( unquoted ) &&
-				// Get excess from tokenize (recursively)
-				(excess = tokenize( unquoted, true )) &&
+				// Get excludedess from tokenize (recursively)
+				(excludedess = tokenize( unquoted, true )) &&
 				// advance to the next closing parenthesis
-				(excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length) ) {
+				(excludedess = unquoted.indexOf( ")", unquoted.length - excludedess ) - unquoted.length) ) {
 
-				// excess is a negative index
-				match[0] = match[0].slice( 0, excess );
-				match[2] = unquoted.slice( 0, excess );
+				// excludedess is a negative index
+				match[0] = match[0].slice( 0, excludedess );
+				match[2] = unquoted.slice( 0, excludedess );
 			}
 
 			// Return only captures needed by the pseudo filter method (type and argument)
@@ -2047,7 +2047,7 @@ Expr = Sizzle.selectors = {
 		"empty": function( elem ) {
 			// http://www.w3.org/TR/selectors/#empty-pseudo
 			// :empty is negated by element (1) or content nodes (text: 3; cdata: 4; entity ref: 5),
-			//   but not by others (comment: 8; processing instruction: 7; etc.)
+			//   but not by others (comment: 8; processing step: 7; etc.)
 			// nodeType < 6 works because attributes (2) do not appear as children
 			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
 				if ( elem.nodeType < 6 ) {
@@ -2207,7 +2207,7 @@ tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
 		}
 	}
 
-	// Return the length of the invalid excess
+	// Return the length of the invalid excludedess
 	// if we're just parsing
 	// Otherwise, throw an error or return tokens
 	return parseOnly ?
@@ -3469,7 +3469,7 @@ function adoptValue( value, resolve, reject, noValue ) {
 			resolve.apply( undefined, [ value ].slice( noValue ) );
 		}
 
-	// For Promises/A+, convert exceptions into rejections
+	// For Promises/A+, convert excludedeptions into rejections
 	// Since jQuery.when doesn't unwrap thenables, we can skip the extra checks appearing in
 	// Deferred#then to conditionally suppress rejection.
 	} catch ( value ) {
@@ -3617,7 +3617,7 @@ jQuery.extend( {
 									}
 								},
 
-								// Only normal processors (resolve) catch and reject exceptions
+								// Only normal processors (resolve) catch and reject excludedeptions
 								process = special ?
 									mightThrow :
 									function() {
@@ -3625,14 +3625,14 @@ jQuery.extend( {
 											mightThrow();
 										} catch ( e ) {
 
-											if ( jQuery.Deferred.exceptionHook ) {
-												jQuery.Deferred.exceptionHook( e,
+											if ( jQuery.Deferred.excludedeptionHook ) {
+												jQuery.Deferred.excludedeptionHook( e,
 													process.stackTrace );
 											}
 
 											// Support: Promises/A+ section 2.3.3.3.4.1
 											// https://promisesaplus.com/#point-61
-											// Ignore post-resolution exceptions
+											// Ignore post-resolution excludedeptions
 											if ( depth + 1 >= maxDepth ) {
 
 												// Only substitute handlers pass on context
@@ -3655,7 +3655,7 @@ jQuery.extend( {
 								process();
 							} else {
 
-								// Call an optional hook to record the stack, in case of exception
+								// Call an optional hook to record the stack, in case of excludedeption
 								// since it's otherwise lost when execution goes async
 								if ( jQuery.Deferred.getStackHook ) {
 									process.stackTrace = jQuery.Deferred.getStackHook();
@@ -3833,12 +3833,12 @@ jQuery.extend( {
 // warn about them ASAP rather than swallowing them by default.
 var rerrorNames = /^(Eval|Internal|Range|Reference|Syntax|Type|URI)Error$/;
 
-jQuery.Deferred.exceptionHook = function( error, stack ) {
+jQuery.Deferred.excludedeptionHook = function( error, stack ) {
 
 	// Support: IE 8 - 9 only
 	// Console exists when dev tools are open, which can happen at any time
 	if ( window.console && window.console.warn && error && rerrorNames.test( error.name ) ) {
-		window.console.warn( "jQuery.Deferred exception: " + error.message, error.stack, stack );
+		window.console.warn( "jQuery.Deferred excludedeption: " + error.message, error.stack, stack );
 	}
 };
 
@@ -3918,7 +3918,7 @@ function completed() {
 if ( document.readyState === "complete" ||
 	( document.readyState !== "loading" && !document.documentElement.doScroll ) ) {
 
-	// Handle it asynchronously to allow scripts the opportunity to delay ready
+	// Handle it asynchronously to allow scripts the opportmeasurementy to delay ready
 	window.setTimeout( jQuery.ready );
 
 } else {
@@ -3962,7 +3962,7 @@ var access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
 				fn.call( elems, value );
 				fn = null;
 
-			// ...except when executing function values
+			// ...excludedept when executing function values
 			} else {
 				bulk = fn;
 				fn = function( elem, key, value ) {
@@ -4311,7 +4311,7 @@ jQuery.fn.extend( {
 			// (and therefore has an element appears at this[ 0 ]) and the
 			// `value` parameter was not undefined. An empty jQuery object
 			// will result in `undefined` for elem = this[ 0 ] which will
-			// throw an exception if an attempt to read a data cache is made.
+			// throw an excludedeption if an attempt to read a data cache is made.
 			if ( elem && value === undefined ) {
 
 				// Attempt to get data from the cache
@@ -4562,21 +4562,21 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 				return jQuery.css( elem, prop, "" );
 			},
 		initial = currentValue(),
-		unit = valueParts && valueParts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
+		measurement = valueParts && valueParts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
 
-		// Starting value computation is required for potential unit mismatches
+		// Starting value computation is required for potential measurement mismatches
 		initialInUnit = elem.nodeType &&
-			( jQuery.cssNumber[ prop ] || unit !== "px" && +initial ) &&
+			( jQuery.cssNumber[ prop ] || measurement !== "px" && +initial ) &&
 			rcssNum.exec( jQuery.css( elem, prop ) );
 
-	if ( initialInUnit && initialInUnit[ 3 ] !== unit ) {
+	if ( initialInUnit && initialInUnit[ 3 ] !== measurement ) {
 
 		// Support: Firefox <=54
 		// Halve the iteration target value to prevent interference from CSS upper bounds (gh-2144)
 		initial = initial / 2;
 
-		// Trust units reported by jQuery.css
-		unit = unit || initialInUnit[ 3 ];
+		// Trust measurements reported by jQuery.css
+		measurement = measurement || initialInUnit[ 3 ];
 
 		// Iteratively approximate from a nonzero starting point
 		initialInUnit = +initial || 1;
@@ -4585,7 +4585,7 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 
 			// Evaluate and update our best guess (doubling guesses that zero out).
 			// Finish if the scale equals or crosses 1 (making the old*new product non-positive).
-			jQuery.style( elem, prop, initialInUnit + unit );
+			jQuery.style( elem, prop, initialInUnit + measurement );
 			if ( ( 1 - scale ) * ( 1 - ( scale = currentValue() / initial || 0.5 ) ) <= 0 ) {
 				maxIterations = 0;
 			}
@@ -4594,7 +4594,7 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 		}
 
 		initialInUnit = initialInUnit * 2;
-		jQuery.style( elem, prop, initialInUnit + unit );
+		jQuery.style( elem, prop, initialInUnit + measurement );
 
 		// Make sure we update the tween properties later on
 		valueParts = valueParts || [];
@@ -4608,7 +4608,7 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 			initialInUnit + ( valueParts[ 1 ] + 1 ) * valueParts[ 2 ] :
 			+valueParts[ 2 ];
 		if ( tween ) {
-			tween.unit = unit;
+			tween.measurement = measurement;
 			tween.start = initialInUnit;
 			tween.end = adjusted;
 		}
@@ -4914,7 +4914,7 @@ function returnFalse() {
 }
 
 // Support: IE <=9 - 11+
-// focus() and blur() are asynchronous, except when they are no-op.
+// focus() and blur() are asynchronous, excludedept when they are no-op.
 // So expect focus to be synchronous when the element is already active,
 // and blur to be synchronous when the element is not already active.
 // (focus and blur are always synchronous in other supported browsers,
@@ -5020,7 +5020,7 @@ jQuery.event = {
 			selector = handleObjIn.selector;
 		}
 
-		// Ensure that invalid selectors throw exceptions at attach time
+		// Ensure that invalid selectors throw excludedeptions at attach time
 		// Evaluate against documentElement in case elem is a non-element node (e.g., document)
 		if ( selector ) {
 			jQuery.find.matchesSelector( documentElement, selector );
@@ -6167,7 +6167,7 @@ jQuery.fn.extend( {
 
 					elem = 0;
 
-				// If using innerHTML throws an exception, use the fallback method
+				// If using innerHTML throws an excludedeption, use the fallback method
 				} catch ( e ) {}
 			}
 
@@ -6444,7 +6444,7 @@ function finalPropName( name ) {
 var
 
 	// Swappable if display is none or starts with table
-	// except "table", "table-cell", or "table-caption"
+	// excludedept "table", "table-cell", or "table-caption"
 	// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
 	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
 	rcustomProp = /^--/,
@@ -6478,7 +6478,7 @@ function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computed
 
 	for ( ; i < 4; i += 2 ) {
 
-		// Both box models exclude margin
+		// Both box models excluded margin
 		if ( box === "margin" ) {
 			delta += jQuery.css( elem, box + cssExpand[ i ], true, styles );
 		}
@@ -6618,7 +6618,7 @@ jQuery.extend( {
 		}
 	},
 
-	// Don't automatically add "px" to these possibly-unitless properties
+	// Don't automatically add "px" to these possibly-measurementless properties
 	cssNumber: {
 		"animationIterationCount": true,
 		"columnCount": true,
@@ -6687,7 +6687,7 @@ jQuery.extend( {
 				return;
 			}
 
-			// If a number was passed in, add the unit (except for certain CSS properties)
+			// If a number was passed in, add the measurement (excludedept for certain CSS properties)
 			// The isCustomProp check can be removed in jQuery 4.0 when we only auto-append
 			// "px" to a few hardcoded values.
 			if ( type === "number" && !isCustomProp ) {
@@ -6908,14 +6908,14 @@ jQuery.Tween = Tween;
 
 Tween.prototype = {
 	constructor: Tween,
-	init: function( elem, options, prop, end, easing, unit ) {
+	init: function( elem, options, prop, end, easing, measurement ) {
 		this.elem = elem;
 		this.prop = prop;
 		this.easing = easing || jQuery.easing._default;
 		this.options = options;
 		this.start = this.now = this.cur();
 		this.end = end;
-		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
+		this.measurement = measurement || ( jQuery.cssNumber[ prop ] ? "" : "px" );
 	},
 	cur: function() {
 		var hooks = Tween.propHooks[ this.prop ];
@@ -6983,7 +6983,7 @@ Tween.propHooks = {
 			} else if ( tween.elem.nodeType === 1 && (
 					jQuery.cssHooks[ tween.prop ] ||
 					tween.elem.style[ finalPropName( tween.prop ) ] != null ) ) {
-				jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
+				jQuery.style( tween.elem, tween.prop, tween.now + tween.measurement );
 			} else {
 				tween.elem[ tween.prop ] = tween.now;
 			}
@@ -8267,7 +8267,7 @@ jQuery.extend( {
 					val :
 
 					// Support: IE <=10 - 11 only
-					// option.text throws exceptions (#14686, #14858)
+					// option.text throws excludedeptions (#14686, #14858)
 					// Strip and collapse whitespace
 					// https://html.spec.whatwg.org/#strip-and-collapse-whitespace
 					stripAndCollapse( jQuery.text( elem ) );
@@ -9278,7 +9278,7 @@ jQuery.extend( {
 			urlAnchor = document.createElement( "a" );
 
 			// Support: IE <=8 - 11, Edge 12 - 15
-			// IE throws exception on accessing the href property if url is malformed,
+			// IE throws excludedeption on accessing the href property if url is malformed,
 			// e.g. http://example.com:80x/
 			try {
 				urlAnchor.href = s.url;
@@ -9434,7 +9434,7 @@ jQuery.extend( {
 				transport.send( requestHeaders, done );
 			} catch ( e ) {
 
-				// Rethrow post-completion exceptions
+				// Rethrow post-completion excludedeptions
 				if ( completed ) {
 					throw e;
 				}
@@ -9833,7 +9833,7 @@ jQuery.ajaxTransport( function( options ) {
 
 				try {
 
-					// Do send the request (this may raise an exception)
+					// Do send the request (this may raise an excludedeption)
 					xhr.send( options.hasContent && options.data || null );
 				} catch ( e ) {
 
@@ -10316,7 +10316,7 @@ jQuery.fn.extend( {
 	// 2) For the hidden or detached element
 	// 3) For body or html element, i.e. in case of the html node - it will return itself
 	//
-	// but those exceptions were never presented as a real life use-cases
+	// but those excludedeptions were never presented as a real life use-cases
 	// and might be considered as more preferable results.
 	//
 	// This logic, however, is not guaranteed and can change at any point in the future
