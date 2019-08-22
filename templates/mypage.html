@@ -17,26 +17,26 @@
   {% endif %}
 {% endwith %}
 <!--------------------------------------------------------------------WELCOME MESSAGE-->
-<section class="section__banner mt-5">
+<section class="container-fluid mt-5">
 <div class="row">
     <div class="col-sm-12 col-md-8">
-        <img class="img-fluid" alt="Food" src="http://sozkibris.com/wp-content/uploads/2017/10/3dbf0726e1dc41349d0.jpg">
+        <img class="img-fluid" alt="Food" src="https://soulenfoodfestival.nl/wp-content/uploads/2016/07/Logo_welkomefoodlovers.jpeg">
     </div>
     <div class="col-sm-12 col-md-4">
-        <h3 class="section__heading--pink">Welcome, <span class="username-color"><strong>{{session['user']}}</strong></span></h3>
-        <p> Welcome to your own page, here you can share your own recipes with all the users and getting mor ideas from new recipes! In here you can add, store, edit and view your favourite recipes. Enjoy your new recipe storage website!</p>
+        <h3>Welcome, <span class="username-color"><strong>{{session['user']}}</strong></span></h3>
+        <p> Welcome to the exclusive pager where you can collect all your recipes and from the others to get them easily and share with everyone! <br> Here you can Add, edit, delete and share your own recipes and get those yummy dishes that everyone love it. <br> I won't waste more of your precious time, have a look on this website and Enjoy it!</p>
     </div>
 </div>
 </section>
 <!-------------------------------------------------------------Latest Recipes-->
-<section class="mt-5">
-<h3 class="section__heading--darkgreen text-center">New Recipes</h3>
+<section class="container-fluid mt-5">
+<h3 class=" text-center">New Recipes</h3>
 <div class="row">
     {% for recipe in recipes %}
     <div class="col-md-6 col-lg-3">
+         <a class="text-reset" href="{{url_for('viewrecipe',recipe_id=recipe._id)}}">
             <div class="img-container" style="background-image: url({{recipe['image']}}); background-size: cover; padding-top: 60%;"> </div>
-        <h6 class="recipe-card text-truncate">{{recipe['recipeName']}}</h6>
-       <!--{{recipe._id.generation_time}}-->
+            <h6 class="recipe-card text-truncate">{{recipe['recipeName']}}</h6>
         </a>
     </div>    
     {%endfor%}

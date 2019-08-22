@@ -9,85 +9,80 @@
   <!--<link rel="stylesheet" href="{{ url_for('static', filename='css/stylish-portfolio.min.css')}}" type="text/css" />-->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/stylish-portfolio.css')}}" type="text/css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}" type="text/css" />
+  <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
   <script src="https://kit.fontawesome.com/555d2c748a.js"></script>
   <title>My cookbook</title>
 </head>
 
-<body>
-  </nav>
-
-  <body id="page-top">
-
-    <!-- Navigation -->
-    <a class="menu-toggle rounded" href="#">
+<body id="page-top">
+      <!-- Navigation -->
+      <a class="menu-toggle rounded" href="#">
     <i class="fas fa-bars"></i>
   </a>
-    <nav id="sidebar-wrapper">
-      <ul class="sidebar-nav">
-        <li class="sidebar-brand">
-          {% if session['user']%}
-          <span class="username-color js-scroll-trigger"><i class="fas fa-book"></i>  {{session['user']}}</span> 
-          {%else%}
-          <a class="js-scroll-trigger" href="{{ url_for('index')}}">My Cookbook</a>
-          {%endif%}
-        </li>
-        <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="{{ url_for('index') }}"><i class="fas fa-home"></i>Home</a>
-        </li>
-        <li class="sidebar-nav-item">
-          {% if session['user']%}
-          <span><a class="js-scroll-trigger" href="{{url_for('sign_in')}}"><i class="fas fa-sign-out-alt"></i> Log Out</a></span>
-          {%else%}
-          <span><a class="js-scroll-trigger" href="{{url_for('sign_in')}}"><i class="fas fa-sign-in-alt"></i> Login / Sign up</a></span> 
-          {%endif%}
-        </li>
-        <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="{{ url_for('recipes') }}"><i class="fas fa-list-alt"></i> Recipes</a>
-        </li>
-        <!--This will display only when a user is logged-->
-        {% if 'user' in session %}
-        <li class="sidebar-nav-item">
-          <a class="js-scroll-triger" href="{{url_for('addrecipe')}}"><i class="fas fa-plus"></i> Add Recipe</a>
-        </li>
-        {% endif %}
-        <li class="sidebar-nav-item">
-          <a class="js-scroll-trigger" href="{{ url_for('favourites') }}">My Favourite Recipes</a>
-        </li>
-      </ul>
-      <!-----------------SEARCH will appear on all pages EXCEPT recipes-->
-      <!-- {% if request.path!='/recipes' %}
-      <form method="GET" action="{{url_for('recipes')}}" class="form-inline my-2 my-lg-0">
-        <input class="form-control-sm  mr-2" name="keyword" type="search" placeholder="Search" aria-label="Search" value="{{keyword if keyword }}">
-        <button class="btn btn-outline-light btn-sm my-2 my-sm-0" type="submit">Search</button>
-      </form>
-      {%endif%}-->
-    </nav>
-    {% block content %} {% endblock %}
+      <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+            {% if session['user']%}
+            <span class="username-color js-scroll-trigger"><i class="fas fa-book"></i>  {{session['user']}}</span> {%else%}
+            <a class="js-scroll-trigger" href="{{ url_for('index')}}">My Cookbook</a> {%endif%}
+          </li>
+          <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="{{ url_for('index') }}"><i class="fas fa-home"></i>Home</a>
+          </li>
+          <li class="sidebar-nav-item">
+            {% if session['user']%}
+            <span><a class="js-scroll-trigger" href="{{url_for('sign_in')}}"><i class="fas fa-sign-out-alt"></i> Log Out</a></span> {%else%}
+            <span><a class="js-scroll-trigger" href="{{url_for('sign_in')}}"><i class="fas fa-sign-in-alt"></i> Login / Sign up</a></span> {%endif%}
+          </li>
+          <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="{{ url_for('recipes') }}"><i class="fas fa-list-alt"></i> Recipes</a>
+          </li>
+          <!--This will display only when a user is logged-->
+          {% if 'user' in session %}
+          <li class="sidebar-nav-item">
+            <a class="js-scroll-triger" href="{{url_for('addrecipe')}}"><i class="fas fa-plus"></i> Add Recipe</a>
+          </li>
+          {% endif %}
+          <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="{{ url_for('favourites') }}">My Favourite Recipes</a>
+          </li>
+          <!-----------------SEARCH-->
+          <li class="sidebar-nav-item">
+            {% if request.path!='/recipes' %}
+            <form method="GET" action="{{url_for('recipes')}}" class="form-inline my-2 my-lg-0">
+              <input class="form-control-sm  mr-2" name="keyword" type="search" placeholder="Search" aria-label="Search" value="{{keyword if keyword }}">
+              <button class="btn btn-outline-light btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            {%endif%}
+          </li>
+        </ul>
+      </nav>
+      {% block content %} {% endblock %}
+   
+
+  <!-- Footer -->
+  <footer class="container-fluid footer text-center">
+    <div class="container">
+      <p class="text-muted small mb-0">Copyright &copy; Debbiepimpo 2019</p>
     </div>
-    </section>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="footer text-center">
-      <div class="container">
-        <p class="text-muted small mb-0">Copyright &copy; Debbiepimpo 2019</p>
-      </div>
-    </footer>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <!-- Plugin JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+  <!-- Custom scripts for this template -->
+  <script src="{{ url_for('static', filename='js/stylish-portfolio.min.js')}}"></script>
 
-    <!-- Custom scripts for this template -->
-    <script src="{{ url_for('static', filename='js/stylish-portfolio.min.js')}}"></script>
 
-  </body>
+</body>
 
 </html>

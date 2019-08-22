@@ -26,6 +26,10 @@
     margin-bottom: 0px;
 }
 
+.text-center-title {
+    text-shadow: 3px 2px #22232545;
+}
+
 .span-text {
     font-weight: 700;
 }
@@ -42,6 +46,16 @@
     background-image: url({{recipe['image']}});
     background-size: cover;
     padding-top: 60%;
+    border: 5px inset #ffc103e0;
+    border-radius: 50px;
+    margin: 2%;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    border: 30px groove #cb46467a;
+    border-radius: 25%;
 }
 
 /*--------FORM----*/
@@ -55,6 +69,77 @@
     padding-top: 15px;
 }
 
+.form-control-search {
+    color: #212529;
+    background-color: #f3df5f70;
+    border: 1px solid #a731e6;
+}
+
 .custom-select {
     margin-left: 0px;
+}
+
+/*-------- DISPLAYING----*/
+
+.border-card {
+    background-color: rgb(180, 179, 182);
+    border: 2px solid #b7b9ba;
+    border-radius: 10px;
+    box-shadow: 42px 73px 132px -10px rgba(138,129,150,1);
+    margin-left: .5%;
+    margin-right: .5%;
+}
+.mt-4 {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.mt-5 {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+/*---Under line---*/
+.text-under-line{
+    text-decoration: underline wavy;
+    color: #aa32e5;
+}
+
+.bottom-page {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+/*--------RECIPE CARDS---*/
+
+/*------------MEDIA---*/
+
+/*phones*/
+
+@media (max-width: 767px) {
+    header {
+        margin-right: auto;
+        width: 100%;
+        height: 100%;
+    }
+    body {
+        height: 90%;
+        width: 100%;
+    }
+}
+
+/*phones and tablets*/
+
+@media (min-width: 668px) and (max-width: 1023px) {
+    header {
+        width: auto;
+        height: 100%;
+    }
+    body {
+        height: 90%;
+        width: 100%;
+    }
 }

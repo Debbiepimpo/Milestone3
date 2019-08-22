@@ -46,7 +46,7 @@
 .icon-minus,
 .icon-close,
 .icon-event,
-.icon-excludedlamation,
+.icon-exclamation,
 .icon-organization,
 .icon-trophy,
 .icon-screen-smartphone,
@@ -320,7 +320,7 @@
 .icon-event:before {
   content: "\e619";
 }
-.icon-excludedlamation:before {
+.icon-exclamation:before {
   content: "\e617";
 }
 .icon-organization:before {

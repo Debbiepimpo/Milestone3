@@ -1,19 +1,20 @@
 {%extends 'base.html'%}{%block content%}
 <div class="section-heading section-heading-red">
-    <h3 class="text-middle text-center">Recipes</h3>
+    <h2 class="text-middle text-center">Recipes</h2>
 </div>
 <div class="mt-4">
     <p class="font-weight-bold">Total Recipes: {{recipes_count}}</p>
+    
     <form action="{{url_for('recipes')}}" method="GET">
         <div class="form-row">
             <div class="form-group col-12 col-md-6 col-lg-3">
                 <label for="search">Search by</label>
-                <input class="form-control form-control--search btn-light" id="search" type="search" name="keyword" placeholder="Keyword" value="{{keyword if keyword}}" />
+                <input class="form-control form-control-search btn-light" id="search" type="search" name="keyword" placeholder="Keyword" value="{{keyword if keyword}}" />
             </div>
             <div class="form-group col-12 col-md-6 col-lg-3">
-                <label for="browse">Select diet <span class="fw-600">OR</span> cuisine</label>
+                <label for="browse">Select diet <span class="span-text">OR</span> cuisine</label>
                 <select class="form-control selectpicker" data-style="btn-light" name="browse" id="browse">
-                    <option "style=color:#212529" disabled selected>Browse</option>
+                    <option disabled selected>Browse</option>
                     <optgroup label="Diet">
                         {% for diet in _diet %}
                         <option {{"selected" if ('browse' in filters) and (filters['browse'] == diet.diet_name)}}>{{diet.diet_name}}</option>
@@ -31,44 +32,47 @@
             </div>
             <!--------------------------------------------------------Sort By-->
             <div class="form-group col-12 col-md-6 col-lg-3 ">
-                <label for="sort">Sort</label>
+                <label for="sort">Sort By</label>
                 <select class="selectpicker form-control" name="sort" id="sort">
-                    <option {{"selected" if ('sort' in filters) and (filters['sort']=="Latest Entry First")}}>Latest Entry First</option>
-                    <option {{"selected" if ('sort' in filters) and (filters['sort']=="Oldest Entry First")}}>Oldest Entry First</option>
-                    <option {{"selected" if ('sort' in filters) and (filters['sort']=="Most viewed on top")}}>Most viewed on top</option>
+                    <option {{"selected" if ('sort' in filters) and (filters['sort']=="Latest Recipe First")}}>Latest Recipe First</option>
+                    <option {{"selected" if ('sort' in filters) and (filters['sort']=="Oldest Recipe First")}}>Oldest Recipe First</option>
+                    <option {{"selected" if ('sort' in filters) and (filters['sort']=="Most Favourites")}}>My Favourites</option>
                 </select>
             </div>
             <!-------------------------------------------Allergens to excluded-->
             <div class="form-group col-12 col-md-6 col-lg-3 ">
-                <label for="excludedAllergy"><span class="fw-600">EXCLUDE </span> Allergens</label>
-                <select class="selectpicker form-control" data-style="btn-light btn-new" name="excludedAllergy[]" id="excludedAllergy" multiple>
-                    {%for allergy in _allergies%}
-                    {%if allergy.allergy_name != "none"%}
+                <label for="excluded_allergy"><span class="span-text">EXCLUDE </span> Allergens</label>
+                <select class="selectpicker form-control" data-style="btn-light btn-new" name="excluded_allergy[]" id="excluded_allergy" multiple>
+                    {% for allergy in _allergies %}
+                    {% if allergy.allergy_name != "none" %}
                         <option {{"selected" if ('excluded' in filters) and (allergy.allergy_name in filters['excluded'])}}>{{allergy.allergy_name}}</option>
-                    {%endif%}    
-                    {%endfor%}
+                    {% endif %}    
+                    {% endfor %}
                 </select>
             </div>
         </div>
-        <div class="clearfix">
-            <button type="submit" class="btn btn-primary float-right" name="submit">Apply</button>
+        <div class="form-group clearfix">
+            <button type="submit" class="btn btn-primary float-center" name="submit" value="Submit">Apply</button>
+            <button type="submit" class="btn btn-primary float-center" name="clear" value="Clear">Clear</button>
         </div>
     </form>
 </div>
-<!------------------------------------------------MESSAGE if no recipes found-->
+<!------------------------------------------------MESSAGE when no recipes found-->
 {%if message%}
-     <div class="alert alert-danger mt-3" role="alert">
-          <span><i class="fas fa-excludedlamation-triangle mr-2"></i><strong>{{message}}</strong></span>
-    </div>
+<div class="alert alert-info mt-3" role="alert">
+    <span><i class="fas fa-exclamation-triangle mr-2"></i><strong>{{message}}</strong></span>
+</div>
 {%endif%}
 
 <!--------------------------------------------------------------------RECIPES-->
 <div class="row mt-4">
-    {% for recipe in recipes %} {% if loop.index0 < page_size %} <div class="col-md-6 col-lg-3 mt-3">
+    {% for recipe in recipes %} {% if loop.index0
+    < page_size %} <div class="col-md-6 col-lg-3 mt-2 border-card">
+        <a class="text-reset" href="{{url_for('viewrecipe',recipe_id=recipe._id)}}">
             <div class="img-container" style="background-image: url({{recipe['image']}}); background-size: cover; padding-top: 60%;"> </div>
-            <h6 class="recipe-card text-truncate text-capitalize">{{recipe['recipeName']}}</h6>
+            <h6 class="recipe-card text-under-line text-center text-truncate text-capitalize">{{recipe['recipeName']}}</h6>
         </a>
-</div>
+    </div>
 {% endif %} {%endfor%}
 </div>
 <div class="row mt-5">
@@ -76,32 +80,31 @@
     <div class="col">
         <form action="{{url_for('recipes',page=page-1)}}" method="GET">
             {%if keyword %}
-            <input type="hidden" name="keyword" value="{{keyword}}" /> {%endif%} {%if 'browse' in filters%}
-            <input type="hidden" value="{{filters['browse']}}" name="browse"> {%endif%} {%if 'sort' in filters%}
-            <input type="hidden" value="{{filters['sort']}}" name="sort"> {%endif%}
+            <input type="hidden" name="keyword" value="{{keyword}}" /> {% endif %} {% if 'browse' in filters %}
+            <input type="hidden" value="{{filters['browse']}}" name="browse"> {% endif %} {% if 'sort' in filters %}
+            <input type="hidden" value="{{filters['sort']}}" name="sort"> {% endif %}
 
             <div class="col clearfix">
-                <button type="submit" class="btn btn-primary float-left" name="submit" value="previous-page">Previous Page</button>
+                <button type="submit" class="btn btn-link float-left" name="submit" value="previous-page">Previous Page</button>
             </div>
         </form>
     </div>
-    {% endif%} 
-    {% if recipes_length > page_size %}
+    {% endif %} {% if recipes_length > page_size %}
     <div class="col">
         <form action="{{url_for('recipes',page=page+1)}}" method="GET">
-            {%if keyword %}
-            <input type="hidden" name="keyword" value="{{keyword}}" /> {%endif%} {%if 'browse' in filters%}
-            <input type="hidden" value="{{filters['browse']}}" name="browse"> {%endif%} {%if 'sort' in filters%}
-            <input type="hidden" value="{{filters['sort']}}" name="sort"> {%endif%}
+            {% if keyword %}
+            <input type="hidden" name="keyword" value="{{keyword}}" /> {% endif %} {% if 'browse' in filters %}
+            <input type="hidden" value="{{filters['browse']}}" name="browse"> {% endif %} {% if 'sort' in filters %}
+            <input type="hidden" value="{{filters['sort']}}" name="sort"> {% endif %}
 
             <div class="col clearfix">
-                <button type="submit" class="btn btn-primary float-right" name="submit" value="next-page">Next Page</button>
+                <button type="submit" class="btn btn-link float-right" name="submit" value="next-page">Next Page</button>
             </div>
         </form>
     </div>
     {%endif%}
 </div>
-<div class="col text-center mt-3 fw-600">
+<div class="col text-center mt-3 bottom-page span-text">
     Current Page: {{page}}
 </div>
 

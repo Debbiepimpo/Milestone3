@@ -1445,13 +1445,13 @@ readers do not read off random characters that represent icons */
 .fa-excludedhange-alt:before {
   content: "\f362"; }
 
-.fa-excludedlamation:before {
+.fa-exclamation:before {
   content: "\f12a"; }
 
-.fa-excludedlamation-circle:before {
+.fa-exclamation-circle:before {
   content: "\f06a"; }
 
-.fa-excludedlamation-triangle:before {
+.fa-exclamation-triangle:before {
   content: "\f071"; }
 
 .fa-expand:before {

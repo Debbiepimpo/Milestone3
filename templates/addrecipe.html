@@ -1,10 +1,10 @@
 {% extends 'base.html'%} {% block content %}
 <div class="section-heading section-heading-red">
-    <h3 class="text-middle text-center">Add New Recipe</h3>
+    <h2 class="text-middle text-center">Add New Recipe</h2>
 </div>
 {%if message%}
 <div class="alert alert-danger" role="alert">
- <p><i class="fas fa-excludedlamation mr-2"></i>{{message}}</p>
+ <p><i class="fas fa-exclamation mr-2"></i>{{message}}</p>
  <hr>
     {%for key in keys%}
        <span class="mr-2"><strong>{{key}}</strong></span>
@@ -13,8 +13,8 @@
 {%endif%}
 
 
-<form class="container" action="{{url_for('insertrecipe')}}" method="POST">
-    <h3 class="text-middle text-center">New Recipe</h3>
+<form class="container-fluid" action="{{url_for('insertrecipe')}}" method="POST">
+    <h2 class="text-middle text-center text-center-title">New Recipe</h2>
     <!------------------------------------------------------------------Recipe Name-->
     <div class="form-row">
         <div class="form-group col-12">
@@ -44,7 +44,7 @@
     </div>
     <!------------------------------------------------------ALLERGENS -->
     <div class="form-group">
-        <h3 class="text-middle text-center">Allergens <span class="text-muted"><small>(check all that apply)</small></span></h3>
+        <h3 class="text-middle text-center">Allergies <span class="text-muted"><small>(check all that apply)</small></span></h3>
         {% for allergy in _allergies %}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" name="allergies[]" value="{{allergy.allergy_name}}" {{ 'checked' if allergy.allergy_name in recipes[ 'allergies']}}>
@@ -53,7 +53,7 @@
         {% endfor %}
     </div>
     <!----------------------------------------------------INGREDIENTS-->
-    <h3 class="text-middle text-center">Ingredients</h3>
+    <h2 class="text-middle text-center text-center-title">Ingredients</h2>
     {% for i in range(ingredients) %}
     <div class="form-row">
         <div class="form-group col-12 col-sm-8">
@@ -83,7 +83,7 @@
         </div>
     </div>
     <!------------------------------------------------------------------INSTRUCTIONS-->
-    <h3 class="text-middle text-center">Instructions</h3>
+    <h2 class="text-middle text-center text-center-title">Instructions</h2>
     {% for i in range(instructions) %}
     <div class="form-group">
         <label for="instruction">Instruction {{i+1}}</label>
@@ -94,12 +94,12 @@
         <div class="float-center">
         <button type="submit" class="btn btn-primary" name="submit" value="addInstruction"><i class="fas fa-plus mr-2"></i>Add</button>
         {% if instructions>1 %}
-        <button type="submit" class="btn btn-primary" name="submit" value="del_instruction"><i class="fas fa-minus mr-2"></i>Delete</button>
+        <button type="submit" class="btn btn-danger" name="submit" value="del_instruction"><i class="fas fa-minus mr-2"></i>Delete</button>
         {% endif %}
         </div>
     </div>
     <!------------------------------------------------------------------IMAGE-->
-    <h3 class="text-middle text-center">Image<span class="text-muted"><small>(insert a valid link)</small></span></h3>
+    <h2 class="text-middle text-center text-center-title">Image<span class="text-muted"><small>(insert a valid link)</small></span></h2>
     <div class="form-group">
         <div class="col">
             <input type="url" class="form-control" value="{% if ('image' in recipes) %} {{recipes['image']}} {%endif%}" name="image">

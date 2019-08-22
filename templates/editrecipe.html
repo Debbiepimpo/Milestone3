@@ -1,11 +1,11 @@
 {% extends 'base.html'%} 
 {% block content %}
 <div class="section-heading section-heading-red">
-    <h3 class="text-middle text-center">Edit Recipe</h3>
+    <h2 class="text-middle text-center">Edit Recipe</h2>
 </div>
 {%if message%}
 <div class="alert alert-danger" role="alert">
- <p><i class="fas fa-excludedlamation mr-2"></i>{{message}}</p>
+ <p><i class="fas fa-exclamation mr-2"></i>{{message}}</p>
  <hr>
     {%for key in keys%}
        <span class="mr-2"><strong>{{key}}</strong></span>
@@ -13,9 +13,9 @@
 </div>
 {%endif%}
 
-<form action="{{url_for('updaterecipe',recipe_id=recipe._id)}}" method="POST">
+<form class="container-fluid" action="{{url_for('updaterecipe',recipe_id=recipe._id)}}" method="POST">
      <h3 class="text-middle text-center">Edit This Recipe</h3>
-    <!------------------------------------------------------------------TITLE-->
+    <!------------------------------------------------------------------RECIPE NAME-->
     <div class="form-row">
         <div class="form-group col-12">
             <label for="recipeName">Recipe Name</label>
@@ -48,40 +48,40 @@
             </select>
         </div>
     </div>
-    <!------------------------------------------------------ALLERGENS SECTION-->
+    <!------------------------------------------------------ALLERGIES-->
     <div class="form-group">
-        <h3 class="text-middle text-center">Allergens <span class="text-muted"><small>(check all that apply)</small></span></h3>
+        <h3 class="text-middle text-center">Allergens <span class="text-muted"><small>(select all that apply)</small></span></h3>
         {% for allergy in _allergies %}
         <div class="form-check form-check-inline">
             {%if 'allergies' in recipes%}
-            <input class="form-check-input" type="checkbox" name="allergies[]" value="{{allergy.allergy_name}}" {{ "checked" if allergy.allergy_name in recipes[ 'allergies']}}>
+            <input class="form-check-input" type="checkbox" name="allergies[]" value="{{allergy.allergy_name}}" {{ "checked" if allergy.allergy_name in recipes[ 'allergy_name']}}>
             <label class="form-check-label" for="allergies">{{allergy.allergy_name}}</label> {%else%}
-            <input class="form-check-input" type="checkbox" name="allergies[]" value="{{allergy.allergy_name}}" {{ "checked" if allergy.allergy_name in recipe[ 'allergies']}}>
+            <input class="form-check-input" type="checkbox" name="allergies[]" value="{{allergy.allergy_name}}" {{ "checked" if allergy.allergy_name in recipe[ 'allergy_name']}}>
             <label class="form-check-label" for="allergies">{{allergy.allergy_name}}</label> {%endif%}
         </div>
         {% endfor %}
     </div>
-    <!----------------------------------------------------INGREDIENTS SECTION-->
+    <!----------------------------------------------------INGREDIENTS-->
     <h3 class="text-middle text-center">Ingredients</h3>
     {% for i in range(ingredient_length) %}
-    <div class="row form-group">
-        <div class="col-12 col-sm-8">
+    <div class="form-row">
+        <div class="form-group col-12 col-sm-8">
             {%if 'ingredients' in recipes %}
-            <label for="ingredient-name">Ingredient</label>
-            <input type="text" class="form-control" value="{{recipes['ingredients'][i]['name'] if recipes['ingredients'][i]}}" name="ingredient-name[]" placeholder="Ingredient Name"> {%elif 'ingredients' in recipe %}
-            <label for="ingredient-name">Ingredient</label>
-            <input type="text" class="form-control" value="{{recipe['ingredients'][i]['name'] if recipe['ingredients'][i] }}" name="ingredient-name[]" placeholder="Ingredient Name"> {%endif%}
+            <label for="ingredientName">Ingredient</label>
+            <input type="text" class="form-control" value="{{recipes['ingredients'][i]['name'] if recipes['ingredients'][i]}}" name="ingredientName[]" placeholder="Ingredient Name"> {%elif 'ingredients' in recipe %}
+            <label for="ingredientName">Ingredient</label>
+            <input type="text" class="form-control" value="{{recipe['ingredients'][i]['name'] if recipe['ingredients'][i] }}" name="ingredientName[]" placeholder="Ingredient Name"> {%endif%}
         </div>
-        <div class="col-6 col-sm-2">
+        <div class="form-group col-6 col-sm-2">
             {%if 'ingredients' in recipes %}
-            <label for="ingredient-quantity">Quantity</label>
-            <input type="number" instruction="0.01" min="0" class="form-control" value="{{recipes['ingredients'][i]['quantity'] if (recipes['ingredients'][i])}}" name="ingredient-quantity[]" placeholder="Quantity"> {%elif 'ingredients' in recipe %}
-            <label for="ingredient-quantity">Quantity</label>
-            <input type="number" instruction="0.01" class="form-control" value="{{recipe['ingredients'][i]['quantity'] if (recipe['ingredients'][i])}}" name="ingredient-quantity[]" placeholder="Quantity"> {%endif%}
+            <label for="ingredientQuantity">Quantity</label>
+            <input type="number" instruction="0.01" min="0" class="form-control" value="{{recipes['ingredients'][i]['quantity'] if (recipes['ingredients'][i])}}" name="ingredientQuantity[]" placeholder="Quantity"> {%elif 'ingredients' in recipe %}
+            <label for="ingredientQuantity">Quantity</label>
+            <input type="number" instruction="0.01" class="form-control" value="{{recipe['ingredients'][i]['quantity'] if (recipe['ingredients'][i])}}" name="ingredientQuantity[]" placeholder="Quantity"> {%endif%}
         </div>
-        <div class="col-6 col-sm-2">
-            <label for="ingredient-measurement">Units</label>
-            <select class="form-control custom-select" recipeName="ingredient-measurement" name="ingredient-measurements[]">
+        <div class="form-group col-6 col-sm-2">
+            <label for="ingredientMeasurement">Measurements</label>
+            <select class="form-control custom-select" recipeName="ingredientMeasurement" name="ingredientMeasurements[]">
                 {% for measurement in measurements %}
                     {% if 'ingredients' in recipes %}
                         <option {{'selected' if (recipes['ingredients'][i]) and (recipes['ingredients'][i]['measurements']==measurement.measurement_name)}}>{{measurement.measurement_name}}</option>
@@ -97,7 +97,7 @@
         <div class="float-center">
             <button type="submit" class="btn btn-primary" name="submit" value="addIngredient"><i class="fas fa-plus mr-2"></i>Add</button>
             {% if ingredient_length>1 %}
-            <button type="submit" class="btn btn-primary" name="submit" value="del_ingredient"><i class="fas fa-minus mr-2"></i>Delete</button>
+            <button type="submit" class="btn btn-danger" name="submit" value="del_ingredient"><i class="fas fa-minus mr-2"></i>Delete</button>
             {%endif%}
         </div>
     </div>
@@ -105,7 +105,7 @@
     <h3 class="text-middle text-center">Instructions</h3>
     {% for i in range(instructions_length)%}
     <div class="form-group">
-        {% if 'instructions' in recipes%}
+        {% if 'instructions' in recipes %}
         <label for="instruction">Instruction {{i+1}}</label>
         <textarea class="form-control"  name="instructions" rows="2">{{recipes['instructions'][i] if recipes['instructions'][i]}}</textarea> 
         {% elif 'instructions' in recipe %}
@@ -117,7 +117,7 @@
         <div class="float-center">
             <button type="submit" class="btn btn-primary" name="submit" value="addInstruction"><i class="fas fa-plus mr-2"></i>Add</button>
             {% if instructions_length>1 %}
-            <button type="submit" class="btn btn-primary" name="submit" value="del_instruction"><i class="fas fa-minus mr-2"></i>Delete</button>
+            <button type="submit" class="btn btn-danger" name="submit" value="del_instruction"><i class="fas fa-minus mr-2"></i>Delete</button>
             {%endif%}
         </div>
     </div>
@@ -131,6 +131,8 @@
             </small>
         </div>
     </div>
+    <div class="form-group clearfix">
     <button type="submit" class="btn btn-primary btn-lg float-center btn-submit-form" name="submit" value="submit">Update</button>
+    </div>
 </form>
 {% endblock %} {{recipes}}

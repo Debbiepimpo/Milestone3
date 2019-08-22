@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %} 
 <div class="section-heading section-heading-green">
-    <h3 class="text-middle text-center">Login</h3>
+    <h2 class="text-middle text-center">Login</h2>
 </div>
 {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
 
@@ -18,8 +18,8 @@
 
 
 
-<!--FORM-->
-<form class="mt-5 form--login text-center" action="{{url_for('login')}}" method="POST">
+<!---------------------------FORM-->
+<form class="mt-5 text-center" action="{{url_for('login')}}" method="POST">
     <div class="form-group">
         <label for="user">Username</label>
         <input type="text" class="form-control" value="" name="user" placeholder="Username" id="user" required>

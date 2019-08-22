@@ -1,73 +1,71 @@
 {%extends 'base.html'%}{%block content%}
 <div class="section-heading section-heading-red">
-    <h3 class="text-middle text-center">My Recipes</h3>
+    <h2 class="text-middle text-center">My Recipes</h2>
     <p class="text-left">Total Recipes: {{total_recipes}}</p>
 </div>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class=flashes>
+{% with messages = get_flashed_messages() %} {% if messages %}
+<div class=flashes>
     {% for message in messages %}
-     <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <span><i class="fas fa-check"></i><strong>{{message}}</strong></span>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <span><i class="fas fa-check"></i><strong>{{message}}</strong></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
+</div>
+{% endif %} {% endwith %}
 
 
 <!------------------------------------------------MESSAGE if no recipes found-->
 {%if message%}
-     <div class="alert alert-info mt-3" role="alert">
-          <span><i class="fas fa-info"></i>{{message}}</strong></span>
-    </div>
+<div class="alert alert-info mt-3" role="alert">
+    <span><i class="fas fa-info"></i>{{message}}</strong></span>
+</div>
 {%endif%}
 <!--------------------------------------------------------------------RECIPES-->
-<div class="card-deck">
-    {% for recipe in recipes %}
-        {% if loop.index0 < page_size %}
-  <div class="card col-md-6 col-lg-3 mt-3">
-    <img src="{{ recipe['image'] }}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h6 class="card-recipeName text-capitalize text-truncate">{{recipe['recipeName']}}</h6>
+<div class="card-deck mt-4">
+    {% for recipe in recipes %} {% if loop.index0
+    < page_size %}
+    <div class="card col-md-6 col-lg-3 mt-2">
+        <a class="text-reset" href="{{url_for('viewrecipe',recipe_id=recipe._id)}}">
+            <img src="{{ recipe['image'] }}" class="img-container" alt="...">
+            <div class="card-body">
+                <h6 class="recipe-card text-under-line text-center text-capitalize text-truncate">{{recipe['recipeName']}}</h6>
+            </div>
+        </a>
     </div>
     <div class="card-footer">
         <div class="col-6">
-            <a class="btn btn-primary btn-sm btn-sm__edit w-100 font-075" href="{{url_for('editrecipe',recipe_id=recipe._id)}}"><i class="fas fa-pen mr-1"></i>Edit</a>
-            </div>
-            <div class="col-6">
-            <a class="btn btn-outline-dark btn-sm w-100 font-075" href="{{url_for('del_recipe',recipe_id=recipe._id)}}"><i class="fas fa-trash-alt mr-1"></i>Delete</a>
-           </div>
+            <a class="btn btn-primary btn-sm w-100 font-075" href="{{url_for('editrecipe',recipe_id=recipe._id)}}"><i class="fas fa-pen mr-1"></i>Edit</a>
+        </div>
+        <div class="col-6">
+            <a class="btn btn-danger btn-sm w-100 font-075" href="{{url_for('del_recipe',recipe_id=recipe._id)}}"><i class="fas fa-trash-alt mr-1"></i>Delete</a>
+        </div>
     </div>
-  </div>
-        {%endif%}
-    {%endfor%}
+</div>
+{%endif%} {%endfor%}
 </div>
 <div class="row mt-5">
     {% if page >1 %}
     <div class="col clearfix">
-        <form action="{{url_for('myrecpies',page=page-1)}}" method="GET">
+        <form action="{{url_for('myrecipes',page=page-1)}}" method="GET">
             <div class="col float-left">
-                <button type="submit" class="btn btn-primary" name="submit" value="previous-page">Previous Page</button>
+                <button type="submit" class="btn btn-link" name="submit" value="previous-page">Previous Page</button>
             </div>
         </form>
     </div>
-    {% endif%}
-   
-    {% if recipes_length > page_size %}
+    {% endif%} {% if recipes_length > page_size %}
     <div class="col float-right">
-        <form action="{{url_for('myrecpies',page=page+1)}}" method="GET">
+        <form action="{{url_for('myrecipes',page=page+1)}}" method="GET">
             <div class="col clearfix">
-                <button type="submit" class="btn btn-primary float-right" name="submit" value="next-page">Next Page</button>
+                <button type="submit" class="btn btn-link float-right" name="submit" value="next-page">Next Page</button>
             </div>
         </form>
     </div>
     {%endif%}
 </div>
-<div class="col text-center mt-3 fw-600">
+<div class="col text-center mt-3 bottom-page span-text">
     Current Page: {{page}}
 </div>
 

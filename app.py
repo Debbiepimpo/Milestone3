@@ -74,16 +74,17 @@ def mypage():
 def recipes(page):
     filters={}
     message=""
+    
     #Allergies not being checked by the results
-    if "excludedAllergy[]" in request.args:
-        filters['excluded']=request.args.getlist('excludedAllergy[]')
+    if "excluded_allergy[]" in request.args and request.args.get('submit') =="Submit":
+        filters['excluded']=request.args.getlist('excluded_allergy[]')
         excludedParams={"allergies":{'$nin':filters['excluded']}}
     else:
         excludedParams={}
         filters['excluded']=[]
         
    #Check if user search by Browse(with cuisine or diet)
-    if "browse" in request.args:
+    if "browse" in request.args and request.args.get('browse')!="None" and request.args.get('submit') =="Submit":
         filters['browse']=request.args.get("browse")
         tmpParams = [];
         tmpParams.append({"cuisine":request.args.get("browse")})
@@ -96,11 +97,11 @@ def recipes(page):
     else:
         findParams = {}
         
-    '''
-    When the user looked for a recipe by a keyword,  
-    it displays the results applying the filters required for that search result
-    '''
-    if "keyword" in request.args and request.args.get('keyword')!="":
+    
+    # When the user looked for a recipe by a keyword,  
+    # it displays the results applying the filters required for that search result
+    
+    if "keyword" in request.args and request.args.get('keyword')!="" and request.args.get('submit') =="Submit":
         keyword = request.args.get('keyword')
         mongo.db.recipes.create_index([('$**','text')])
         findParams['$text'] = { '$search': keyword  }
@@ -114,10 +115,10 @@ def recipes(page):
     # Get parameters based on the imput: Sort
     if "sort" in request.args:
         filters['sort']=request.args.get("sort")
-        if request.args.get('sort')=="Latest Entry First":
+        if request.args.get('sort')=="Latest Recipe First":
             sortField = '_id'
             sortOrder = -1
-        elif request.args.get('sort')=="Oldest Entry First":
+        elif request.args.get('sort')=="Oldest Recipe First":
             sortField = '_id'
             sortOrder = 1
             
@@ -258,15 +259,15 @@ def updaterecipe(recipe_id):
     # Take the data written into the form and convert into dictionary
     recipes=request.form.to_dict()
   
-    ingredient_length=len(request.form.getlist("ingredient-name[]"))
+    ingredient_length=len(request.form.getlist("ingredientName[]"))
     instructions_length=len(request.form.getlist("instructions"))
     
     # This will create an array with the name, the quantity and the measurements of each ingredient
     headers = ('name', 'quantity','measurements')
     values = (
-        request.form.getlist('ingredient-name[]'),
-        request.form.getlist('ingredient-quantity[]'),
-        request.form.getlist('ingredient-measurements[]'),
+        request.form.getlist('ingredientName[]'),
+        request.form.getlist('ingredientQuantity[]'),
+        request.form.getlist('ingredientMeasurements[]'),
     )
     items = [{} for i in range(len(values[0]))]
     for x,i in enumerate(values):
@@ -279,52 +280,14 @@ def updaterecipe(recipe_id):
     form_instructions = request.form.getlist("instructions")
     
     #Delete the name, the quantity and the measurements when this are not required by the format for mongoDB
-    del recipes["ingredient-name[]"]
-    del recipes["ingredient-quantity[]"]
-    del recipes["ingredient-measurements[]"]
+    del recipes["ingredientName[]"]
+    del recipes["ingredientQuantity[]"]
+    del recipes["ingredientMeasurements[]"]
     del recipes["instructions"]
    
     # Put the data into the dictionary
     recipes["ingredients"]=items
     recipes["instructions"]=form_instructions
-    
-    recipeName = request.form['recipeName']
-    recipe_diet = request.form['diet']
-    recipe_cuisine = request.form['cuisine']
-    allergy_name = request.form['allergy_name']
-    ingredientName = request.form['ingredientName']
-    ingredientQuantity = request.form['ingredientQuantity']
-    ingredientMeasurements = request.form['ingredientMeasurements']
-    instruction_1 = request.form['instruction']
-    image = request.form['recipe_image']
-    
-    
-    recipe_data = {
-        
-        'recipeName': recipeName,
-        'diet': recipe_diet,
-        'cuisine': recipe_cuisine,
-        'allergy_name': allergy_name,
-        'ingredients': {
-            ingredientName: {
-                'ingredientName': ingredientName
-            },
-            ingredientQuantity: {
-                'ingredientQuantity': ingredientQuantity
-            },
-            ingredientMeasurements: {
-                'ingredientMeasurements': ingredientMeasurements
-            }
-        },
-        'instructions': {
-            instruction_1:{
-                'instruction': instruction_1
-                 }
-            },
-        'image': image
-          
-    }
-    
     
     if form_allergies:
         del recipes["allergies[]"]
@@ -408,6 +371,7 @@ def addrecipe():
     cuisine=[cuisine for cuisine in _cuisine ]
     _measurements=mongo.db.measurements.find()
     measurements=[measurement for measurement in _measurements]
+    
     instructions = 2
     ingredients=2
     recipes={}
@@ -440,7 +404,7 @@ def insertrecipe():
     ingredients = len(ingredientsList)
     
     # Array of tuples for each ingredient
-    recipes=request.form.to_dict()
+    recipe=request.form.to_dict()
     headers = ('name', 'quantity','measurements')
     values = (
         request.form.getlist('ingredientName[]'),
@@ -455,76 +419,40 @@ def insertrecipe():
     form_allergies = request.form.getlist("allergies[]")
     form_instructions = request.form.getlist("instructions")
     
-    del recipes["ingredientName[]"]
-    del recipes["ingredientQuantity[]"]
-    del recipes["ingredientMeasurements[]"]
-    del recipes["instructions"]
+    # To delete the extra lines of ingredients and instructions
+    del recipe["ingredientName[]"]
+    del recipe["ingredientQuantity[]"]
+    del recipe["ingredientMeasurements[]"]
+    del recipe["instructions"]
     
-    recipeName = request.form['recipeName']
-    recipe_diet = request.form['diet']
-    recipe_cuisine = request.form['cuisine']
-    allergy_name = request.form['allergy_name']
-    ingredientName = request.form['ingredientName']
-    ingredientQuantity = request.form['ingredientQuantity']
-    ingredientMeasurements = request.form['ingredientMeasurements']
-    instruction_1 = request.form['instruction']
-    image = request.form['recipe_image']
-    
-    
-    recipe_data = {
-        
-        'recipeName': recipeName,
-        'diet': recipe_diet,
-        'cuisine': recipe_cuisine,
-        'allergy_name': allergy_name,
-        'ingredients': {
-            ingredientName: {
-                'ingredientName': ingredientName
-            },
-            ingredientQuantity: {
-                'ingredientQuantity': ingredientQuantity
-            },
-            ingredientMeasurements: {
-                'ingredientMeasurements': ingredientMeasurements
-            }
-        },
-        'instructions': {
-            instruction_1:{
-                'instruction': instruction_1
-            },
-    },
-        'image': image
-    }
-    
-    #recipe_data.to_dict()
     
     if form_allergies:
-        del recipes["allergies[]"]
-        recipes["allergies"]=form_allergies
+        del recipe["allergies[]"]
+        recipe["allergies"]=form_allergies
     else:
-        recipes["allergies"]=["None"]
+        recipe["allergies"]=["None"]
     
-    recipes["ingredients"]=items
-    recipes["instructions"]=form_instructions
-    recipes["user"]=session['user']
+    recipe["ingredients"]=items
+    recipe["instructions"]=form_instructions
+    recipe["user"]=session['user']
     
   
     if request.form.get('submit') == 'submit':
         
-        if recipes["image"]=="":
+        if recipe["image"]=="":
             # If there's no image link provided a image settled as default will be used
-            recipes["image"]="../static/img/default.jpg"
+            recipe["image"]="http://sozkibris.com/wp-content/uploads/2017/10/3dbf0726e1dc41349d0.jpg"
         
         # Check allergies, description and recipe name only, to make sure if the key length has a value equals to 0 
-        keys = [key for key,val in recipes.items() if not val]
+        keys = [key for key,val in recipe.items() if not val]
         # Check  also ingredients and instructions
-        keys_ingredients = [val for val in recipes["ingredients"] if not val["measurements"] or not val["name"] or not val["quantity"]]
-        keys_instructions = [val for val in recipes["instructions"] if not val]
+        keys_ingredients = [val for val in recipe["ingredients"] if not val["measurements"] or not val["name"] or not val["quantity"]]
+        keys_instructions = [val for val in recipe["instructions"] if not val]
          # If cuisine not able at the dictionary    
-        if 'cuisine' not in recipes:
+        if 'cuisine' not in recipe:
             keys.append('cuisine')
         # If diet is not able at the dictionary 
-        if 'diet' not in recipes:
+        if 'diet' not in recipe:
             keys.append('diet')
         # If ingredients and instructions have no values into the array, then it will contain empy keys
         if keys_ingredients:
@@ -535,9 +463,9 @@ def insertrecipe():
             message="This fields are required. Please fill them in."
         else:
             recipes=mongo.db.recipes
-            recipes.insert_one(recipes)
+            recipes.insert_one(recipe)
             flash('The recipe has being added.')
-            return redirect(url_for('myrecpies'))
+            return redirect(url_for('myrecipes'))
         
     elif request.form.get('submit') == 'addInstruction':
         instructions += 1
@@ -549,10 +477,16 @@ def insertrecipe():
         ingredients -= 1
 
  
-    return render_template('addrecipe.html', instructions=instructions, form_instructions=form_instructions, recipes=recipes,
+    return render_template('addrecipe.html', instructions=instructions, form_instructions=form_instructions, recipes=recipe,
     ingredients=ingredients,measurements=measurements,_cuisine=cuisine, _diet=diet,
     _allergies=allergies,form_allergies=form_allergies,message=message,keys=keys )                                
+
+@app.route('/viewrecipe/<recipe_id>')
+def viewrecipe(recipe_id):
+    the_recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
     
+    return render_template('viewrecipe.html',recipe=the_recipe)
+
 @app.route("/favourites")
 def favourites():
     return render_template("favourites.html")
