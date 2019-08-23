@@ -18,31 +18,27 @@
 
 
 <!------------------------------------------------MESSAGE if no recipes found-->
-{%if message%}
+{%if message %}
 <div class="alert alert-info mt-3" role="alert">
-    <span><i class="fas fa-info"></i>{{message}}</strong></span>
+    <span><i class="fas fa-info"></i>{{message}}</span>
 </div>
-{%endif%}
+{% endif %}
 <!--------------------------------------------------------------------RECIPES-->
-<div class="card-deck mt-4">
+<div class="row mt-4">
     {% for recipe in recipes %} {% if loop.index0
-    < page_size %}
-    <div class="card col-md-6 col-lg-3 mt-2">
+    < page_size %} <div class=" col-md-6 col-lg-3 mt-2 border-card">
         <a class="text-reset" href="{{url_for('viewrecipe',recipe_id=recipe._id)}}">
-            <img src="{{ recipe['image'] }}" class="img-container" alt="...">
-            <div class="card-body">
-                <h6 class="recipe-card text-under-line text-center text-capitalize text-truncate">{{recipe['recipeName']}}</h6>
-            </div>
+            <div class="img-container" style="background-image: url({{recipe['image']}}); background-size: cover; padding-top: 60%;"></div>
+            <h6 class="recipe-card text-under-line text-center text-truncate text-capitalize">{{recipe['recipeName']}}</h6>
         </a>
-    </div>
-    <div class="card-footer">
-        <div class="col-6">
-            <a class="btn btn-primary btn-sm w-100 font-075" href="{{url_for('editrecipe',recipe_id=recipe._id)}}"><i class="fas fa-pen mr-1"></i>Edit</a>
+        <div class="card-sides row col-12">
+            <div class="col-6">
+                <a class="btn btn-primary btn-sm w-100 font-075" href="{{url_for('editrecipe',recipe_id=recipe._id)}}"><i class="fas fa-pen mr-1"></i>Edit</a>
+            </div>
+            <div class="col-6">
+                <a class="btn btn-danger btn-sm w-100 font-075" href="{{url_for('del_recipe',recipe_id=recipe._id)}}"><i class="fas fa-trash-alt mr-1"></i>Delete</a>
+            </div>
         </div>
-        <div class="col-6">
-            <a class="btn btn-danger btn-sm w-100 font-075" href="{{url_for('del_recipe',recipe_id=recipe._id)}}"><i class="fas fa-trash-alt mr-1"></i>Delete</a>
-        </div>
-    </div>
 </div>
 {%endif%} {%endfor%}
 </div>
@@ -69,4 +65,4 @@
     Current Page: {{page}}
 </div>
 
-{%endblock%}
+{% endblock %}

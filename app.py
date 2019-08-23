@@ -476,23 +476,194 @@ def insertrecipe():
     elif request.form.get('submit') == 'del_ingredient':  
         ingredients -= 1
 
- 
     return render_template('addrecipe.html', instructions=instructions, form_instructions=form_instructions, recipes=recipe,
     ingredients=ingredients,measurements=measurements,_cuisine=cuisine, _diet=diet,
     _allergies=allergies,form_allergies=form_allergies,message=message,keys=keys )                                
+
 
 @app.route('/viewrecipe/<recipe_id>')
 def viewrecipe(recipe_id):
     the_recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
     
     return render_template('viewrecipe.html',recipe=the_recipe)
+'''   
+@app.route('/favourites',defaults={'page':1})
+@app.route('/favourites/page/<page>')
+def favourites(page):
+    """
+    My Favourites Page displays all the recipes the user has added as their favourites. 
+    """
+    # Check if user is logged in
+    # If the user is not logged the page will be redirected to Login page.
+    if session.get('logged_in') is None:
+        flash("Please login for getting full access to your website")
+        return redirect(url_for('sign_in'))
+    
+    # When the user is in session, the  username is stored on a variable
+    user = session['user']
+    
+    # Defines favourite_recipes array from current User document
+    favourites_total_user= mongo.db.favourites.find({ 'user': user  }).sort('_id', -1)
+    favourites_total_count=favourites_total_user.count()
+    # If the user hasn't got any recipes on his cookbook to display then this message wil be display
+    message=""
+    recipes_id=[]
+    if favourites_total_count==0:
+        message="Sorry, there's no recipes to display"
+    else:
+        for favourite in favourites_total_user :
+            recipes_id.append(favourite.get('_id'))
+    
+    recipes_total_user=mongo.db.recipes.find({"_id":{"$in":recipes_id}})
+    recipes_total_count=favourites_total_user.count()
 
-@app.route("/favourites")
-def favourites():
-    return render_template("favourites.html")
+    # It set how many recipes will be maximum display per page (same as the recipes above) 
+    page_size=10
+    page=int(page)
+    skips=page_size * (int(page) - 1)
+    recipes_per_page=recipes_total_user.skip(skips).limit(page_size + 1)
+    recipes_length=recipes_per_page.count(True)
+    message=recipes_per_page    
+    
+    return render_template('favourites.html', recipes=recipes_total_user,page_size=page_size,page=page,
+            recipes_length=recipes_length,total_recipes=recipes_total_count,message=message, favourites=favourites, favourite=favourite)
+
+  
+@app.route('/insertfavourite/<recipe_id>', methods=["GET", "POST"])
+def insertfavourite(recipe_id):
+    """
+    Add the current recipe to the current users "Favourites" array in the Users collection. 
+    """
+    # Checks if user is in session
+    if session.get('logged_in') is None:
+        flash("Please login for getting full access to your website")
+        return redirect(url_for('sign_in')) 
+    
+    user=session['user']
+        
+    favourites=mongo.db.favourites
+        
+    # Makes sure the recipe is not already in the user's favourites and then adds to favourites
+    if ObjectId(recipe_id) not in favourites:
+        user.update_one({"user": session['user']}, 
+                                            {"$push" :
+                                                {"favourite" : ObjectId(recipe_id)}})
+            
+        recipes.update({'_id':ObjectId(recipe_id)},
+                                            {'$inc': {'favourite_count': 1}})
+            
+    else:
+        # If the recipe is already in the User's favourites, the below message is displayed
+        flash("You have already added this recipe to your Favourites")
+        return redirect(url_for('viewrecipe', user=user['user'], recipe_id=recipe_id))
+    
+    
+    
+    flash('Added to My Favourites.')
+    return redirect(url_for('viewrecipe', user=user['user'], recipe_id=recipe_id))
+
+
+@app.route('/removefavourite/<recipe_id>', methods=["GET", "POST"])
+def removefavourite(recipe_id):
+    """
+    Removes the current recipe from the current users "Favourites" array in the Users collection. 
+    """
+    # Identifies the current user 
+    user=session['user']
+    
+    favourites=mongo.db.favourites.find_one({"recipe_id":recipe_id,"user":user})
+        
+            
+    # Identifies the recipe to be removed from the user's favourite
+    # remove_recipe = recipes.find_one({'_id': ObjectId(recipe_id)})
+        
+    # Removes recipe from user's favourites
+    if ObjectId(recipe_id) in favourites:
+        user.update({"user": session['user']}, 
+                                                {"$pull" :
+                                                    {"favourite" : ObjectId(recipe_id)}})
+                                                    
+        recipes.update({'_id':ObjectId(recipe_id)},
+                                                {'$inc': {'favourite_count': -1}})                                            
+        flash('Removed from My Favourites.')
+        return redirect(url_for('favourites', user=user['user'], recipe_id=recipe_id))
+            
+                                                        
+    else:
+        flash("You must be logged in to Edit, Save or Delete a recipe!")
+        return redirect(url_for('login'))
+
+'''
+
+@app.route('/favourites',defaults={'page':1})
+@app.route('/favourites/page/<page>')
+def favourites(page):
+    # If the user is not logged the page will be redirected to Login page.
+    if session.get('logged_in') is None:
+        flash("Please login for getting full access to your website")
+        return redirect(url_for('sign_in'))
+    
+    # When the user is in session, the  username is stored on a variable
+    user = session['user']
+    # It will show only recipes that belongs to the user.
+    favourites_total_user= mongo.db.favourites.find({ 'user': user  }).sort('_id', -1)
+    favourites_total_count=favourites_total_user.count()
+    # If the user hasn't got any recipes on his cookbook to display then this message wil be display
+    message=""
+    recipes_id=[]
+    if favourites_total_count==0:
+        message="Sorry, there's no recipes to display"
+    else:
+        for favourite in favourites_total_user :
+            recipes_id.append(favourite.get('_id'))
+
+        recipes_total_user=mongo.db.recipes.find({"_id":{"$in":recipes_id}})
+        recipes_total_count=favourites_total_user.count()
+
+        # It set how many recipes will be maximum display per page (same as the recipes above) 
+        page_size=10
+        page=int(page)
+        skips=page_size * (int(page) - 1)
+        recipes_per_page=recipes_total_user.skip(skips).limit(page_size + 1)
+        recipes_length=recipes_per_page.count(True)
+        message=recipes_per_page
+        
+    return render_template('favourites.html',recipes=recipes_total_user,page_size=page_size,page=page,
+            recipes_length=recipes_length,total_recipes=recipes_total_count,message=message)
+
+@app.route('/insertfavourite/<recipe_id>', methods =["POST","GET"])
+def insertfavourite(recipe_id):
+    if session.get('logged_in') is None:
+        flash("Please login for getting full access to your website")
+        return redirect(url_for('sign_in')) 
+    
+    user=session['user']
+    favourites=mongo.db.favourites
+    recipe={'recipe_id':recipe_id,'user':user}
+    favourites.insert_one(recipe)
+    flash('The recipe has being added to favourites.')
+    
+    recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
+    
+    return render_template('viewrecipe.html',recipe=recipe)
+    
+@app.route('/removefavourite/<recipe_id>', methods =["POST","GET"])
+def removefavourite(recipe_id):
+    if session.get('logged_in') is None:
+        flash("Please login for getting full access to your website")
+        return redirect(url_for('sign_in')) 
+    
+    user=session['user']
+    
+    favourite=mongo.db.favourites.find_one({"recipe_id":recipe_id,"user":user})
+    mongo.db.favourites.remove({'_id':ObjectId(recipe_id)})
+    flash('The recipe has being removed from favourites.')
+    
+    recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
+    return render_template('viewrecipe.html',recipe=recipe)
     
     
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
-            debug=False)
+            debug=True)

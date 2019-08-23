@@ -17,26 +17,26 @@
   {% endif %}
 {% endwith %}
 <!--------------------------------------------------------------------WELCOME MESSAGE-->
-<section class="container-fluid mt-5">
+<section class=" mt-4">
 <div class="row">
     <div class="col-sm-12 col-md-8">
         <img class="img-fluid" alt="Food" src="https://soulenfoodfestival.nl/wp-content/uploads/2016/07/Logo_welkomefoodlovers.jpeg">
     </div>
-    <div class="col-sm-12 col-md-4">
+    <div class="col-sm-12 col-md-4 mt-2 center-text-mypage">
         <h3>Welcome, <span class="username-color"><strong>{{session['user']}}</strong></span></h3>
-        <p> Welcome to the exclusive pager where you can collect all your recipes and from the others to get them easily and share with everyone! <br> Here you can Add, edit, delete and share your own recipes and get those yummy dishes that everyone love it. <br> I won't waste more of your precious time, have a look on this website and Enjoy it!</p>
+        <p> Welcome to the exclusive page where you can collect all your recipes <br> and from the others to get them easily and share with everyone! <br> Here you can Add, edit, delete and share your own recipes and get those <br> yummy dishes that everyone love it. <br> I won't waste more of your precious time, have a look on this website and Enjoy it!</p>
     </div>
 </div>
 </section>
 <!-------------------------------------------------------------Latest Recipes-->
-<section class="container-fluid mt-5">
-<h3 class=" text-center">New Recipes</h3>
+<section class="recipes-bottom mt-4">
+<h2 class="text-middle text-center text-center-title">New Recipes</h2>
 <div class="row">
     {% for recipe in recipes %}
-    <div class="col-md-6 col-lg-3">
+    <div class="col-md-3 col-lg-3 border-card">
          <a class="text-reset" href="{{url_for('viewrecipe',recipe_id=recipe._id)}}">
             <div class="img-container" style="background-image: url({{recipe['image']}}); background-size: cover; padding-top: 60%;"> </div>
-            <h6 class="recipe-card text-truncate">{{recipe['recipeName']}}</h6>
+            <h6 class="recipe-card text-under-line text-center text-truncate text-capitalize">{{recipe['recipeName']}}</h6>
         </a>
     </div>    
     {%endfor%}

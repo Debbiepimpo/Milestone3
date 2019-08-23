@@ -3,7 +3,10 @@
 .mb-1 {
     color: #f5d011;
 }
-
+/*-----COLORS---*/
+.light-red {
+     color: #f28686;
+}
 /*----SECTION HEADING----*/
 
 .section-heading {
@@ -11,12 +14,25 @@
     box-shadow: -5px -8px 28px 8px rgba(138, 72, 224, 1);
 }
 
-.section-heading-green {
-    background-color: #b3ffe2;
+.section-heading-light-red {
+    color: #371ff4;
+    background-color: #f28686;
 }
 
 .section-heading-red {
+    color: whitesmoke;
     background-color: #ea454f;
+}
+
+.section-heading-purple{
+    color: darkred;
+}
+
+/*-------BACKGROUNDS----*/
+
+.background-mypage {
+    background-color: #affc8e40;
+    border-radius: 50%;
 }
 
 /*------TEXT-----*/
@@ -28,11 +44,20 @@
 
 .text-center-title {
     text-shadow: 3px 2px #22232545;
+    padding: 22px;
 }
 
 .span-text {
     font-weight: 700;
 }
+
+/*---Under line---*/
+
+.text-under-line {
+    text-decoration: underline wavy;
+    color: #2623be;
+}
+
 
 /*-----USER----*/
 
@@ -79,16 +104,22 @@
     margin-left: 0px;
 }
 
-/*-------- DISPLAYING----*/
+
+/*-------- RECIPE CARDS---*/
 
 .border-card {
     background-color: rgb(180, 179, 182);
     border: 2px solid #b7b9ba;
     border-radius: 10px;
-    box-shadow: 42px 73px 132px -10px rgba(138,129,150,1);
+    box-shadow: 42px 73px 132px -10px rgba(138, 129, 150, 1);
     margin-left: .5%;
     margin-right: .5%;
 }
+
+.recipes-bottom {
+    margin-bottom: 70px;
+}
+
 .mt-4 {
     margin-left: 5%;
     margin-right: 5%;
@@ -99,11 +130,7 @@
     margin-right: 10%;
 }
 
-/*---Under line---*/
-.text-under-line{
-    text-decoration: underline wavy;
-    color: #aa32e5;
-}
+/*----Giving some spaces to the bottom and sides for making nice view to the user---*/
 
 .bottom-page {
     position: fixed;
@@ -113,7 +140,30 @@
     padding-top: 10px;
     padding-bottom: 30px;
 }
-/*--------RECIPE CARDS---*/
+
+.card-sides {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.center-text-mypage {
+    padding-top: 20%;
+}
+/*-------RECIPES----*/
+
+.instructions-list-item {
+    display: list-item;
+}
+
+.ingredients-list-item {
+    border: none;
+    margin: 0px;
+    padding: .55rem .75rem;
+}
+
+.list-group-item {
+    border-color: transparent;
+}
 
 /*------------MEDIA---*/
 
@@ -129,6 +179,13 @@
         height: 90%;
         width: 100%;
     }
+    .center-text-mypage {
+        padding-top: 20%;
+    }
+    
+    .background-mypage {
+        background-color: #fff;
+    }
 }
 
 /*phones and tablets*/
@@ -141,5 +198,18 @@
     body {
         height: 90%;
         width: 100%;
+    }
+    .margin-row{
+        margin-right: 0;
+    }
+    .border-row{
+        padding-left: 15%;
+    }
+    .center-text-mypage {
+        padding-top: 0px;
+    }
+
+    .background-mypage {
+        background-color: #fff;
     }
 }

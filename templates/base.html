@@ -23,7 +23,7 @@
         <ul class="sidebar-nav">
           <li class="sidebar-brand">
             {% if session['user']%}
-            <span class="username-color js-scroll-trigger"><i class="fas fa-book"></i>  {{session['user']}}</span> {%else%}
+            <a class="js-scroll-trigger" href="{{ url_for('myrecipes')}}"><span class="username-color"><i class="fas fa-book"></i>  {{session['user']}}</span></a> {%else%}
             <a class="js-scroll-trigger" href="{{ url_for('index')}}">My Cookbook</a> {%endif%}
           </li>
           <li class="sidebar-nav-item">
@@ -61,7 +61,7 @@
    
 
   <!-- Footer -->
-  <footer class="container-fluid footer text-center">
+  <footer class=" footer text-center">
     <div class="container">
       <p class="text-muted small mb-0">Copyright &copy; Debbiepimpo 2019</p>
     </div>
