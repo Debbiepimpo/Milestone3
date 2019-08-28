@@ -6,7 +6,7 @@ The idea of this website is to have an online storage for look up, create and sa
 
 ## Website Link
 
-My cookbook can be accessed on: [My Cookbook.](https://my-recipe-db.herokuapp.com/)
+My cookbook can be accessed on: [My Cookbook.](https://my-recipe-cookbook.herokuapp.com/)
 
 **Note for CI Assessors** - You need to create a new account with an username  and a password, be aware this won't be encrypted.
 
@@ -36,8 +36,8 @@ The site should be responsive and work on all browsers.
 ## Wireframes
 
 
- * [Mobile Wireframes](https://github.com/johnnycistudent/recipe-app/blob/master/static/images/Mobile%20Wireframes%20PDF.pdf)
- * [Desktop Wireframes](https://github.com/johnnycistudent/recipe-app/blob/master/static/images/Desktop%20Wireframes%20PDF.pdf)
+ * [Mobile Wireframes](hhttps://github.com/Debbiepimpo/Milestone3/tree/master/wireframes/mobile-wireframes)
+ * [Desktop Wireframes](https://github.com/Debbiepimpo/Milestone3/tree/master/wireframes/desktop-wireframes)
 
 
 ### User Stories
