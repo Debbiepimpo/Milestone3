@@ -24,7 +24,7 @@
 </div>
 {% endif %}
 <!--------------------------------------------------------------------RECIPES-->
-<div class="row mt-4">
+<div class="row mt-4 border-row">
     {% for recipe in recipes %} {% if loop.index0
     < page_size %} <div class=" col-md-6 col-lg-3 mt-2 border-card">
         <a class="text-reset" href="{{url_for('viewrecipe',recipe_id=recipe._id)}}">
@@ -44,25 +44,26 @@
 </div>
 <div class="row mt-5">
     {% if page >1 %}
-    <div class="col clearfix">
+    <div class="col col-fix-btn">
         <form action="{{url_for('myrecipes',page=page-1)}}" method="GET">
-            <div class="col float-left">
-                <button type="submit" class="btn btn-link" name="submit" value="previous-page">Previous Page</button>
+            <div class="col clearfix">
+                <button type="submit" class="btn btn-link float-left light-bg-red" name="submit" value="previous-page"><i class="fas fa-chevron-left whitesmoke"></i></button>
             </div>
         </form>
     </div>
     {% endif%} {% if recipes_length > page_size %}
-    <div class="col float-right">
+    <div class="col col-fix-btn">
         <form action="{{url_for('myrecipes',page=page+1)}}" method="GET">
             <div class="col clearfix">
-                <button type="submit" class="btn btn-link float-right" name="submit" value="next-page">Next Page</button>
+                <button type="submit" class="btn btn-link float-right light-bg-red" name="submit" value="next-page"><i class="fas fa-chevron-right whitesmoke"></i></button>
             </div>
         </form>
     </div>
     {%endif%}
+    <div class="col text-center mt-3 bottom-page span-text">
+        Current Page: {{page}}
+    </div>
 </div>
-<div class="col text-center mt-3 bottom-page span-text">
-    Current Page: {{page}}
-</div>
+
 
 {% endblock %}

@@ -4,12 +4,31 @@
     <h2 class="text-middle text-center">{{recipe['recipeName']}}</h2>
 </div>
 
+{% with messages = get_flashed_messages() %}{% if messages %}
+<div class=flashes>
+    {% for message in messages %}
+    <div class="alert alert-info fade show" role="alert">
+        <span><i class="fas fa-check"></i><strong>{{message}}</strong></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<!------------------------------------------------MESSAGE if no recipes found-->
+{% if message %}
+<div class="alert alert-info mt-3" role="alert">
+    <span><i class="fas fa-info"></i>{{message}}</span>
+</div>
 
+{% endif %} {% endwith %}
 
 <div class="row mt-4 margin-row">
     <div class="col-12 md-auto">
-        <a href="{{url_for('removefavourite',recipe_id=recipe._id)}}" id="fav2" class="float-left favourites mt-1" title="[-] Remove as favorite"><i class="far fa-star ml-4"></i></a>
-        <a href="{{url_for('insertfavourite',recipe_id=recipe._id)}}" class="float-left favourites mt-1" id="fav" title="[+] Add as favorite"><i class="fas fa-star ml-4"></i></a>
+        {% if favourite %}
+        <a href="{{url_for('insertfavourite',recipe_id=recipe._id)}}" class="float-center favourites mt-1" id="fav" title="[+] Add as favorite"><i class="far fa-star ml-4 light-red"></i></a> {% else %}
+        <a href="{{url_for('removefavourite',recipe_id=recipe._id)}}" id="fav2" class="float-center favourites mt-1" title="[-] Remove as favorite"><i class="fas fa-star ml-4 light-red"></i></a> {% endif %}
     </div>
 
 </div>
@@ -17,29 +36,29 @@
 <div class="row mt-4">
     <div class="col-12 col-md-auto">
         <div class="ingredients p-2">
-            <h3 class="mt-3 section-heading-purple text-center-title">Ingredients</h3>
-            <ul class="list-group">
+            <h3 class="text-center mt-3 section-heading-purple text-center-title">Ingredients</h3>
+            <ul class="list-group" id="ingredients-list">
                 {% for i in range(recipe.ingredients|count) %}
-                <li class="list-group-item ingredients-list-item text-capitalize"><span class="float-left light-red mt-1"><i class="fas fa-circle ml-4"></i></span> {{recipe.ingredients[i].name}}<strong class="ml-1">{{recipe.ingredients[i].quantity}} {{recipe.ingredients[i].measurements}}</strong></li>
+                <li class="list-group-item ingredients-list-item text-capitalize"><span class="float-center orange-text mt-1"> {{recipe.ingredients[i].name}}<strong class="ml-1">{{recipe.ingredients[i].quantity}} {{recipe.ingredients[i].measurements}}</strong></span></li>
                 {%endfor%}
             </ul>
         </div>
     </div>
     <div class="col">
         <div class="mt-3 mt-md-0">
-            <div class="img-container mt-2 mt-lg-auto" style="background-image: url({{recipe.image}}); background-size: cover; padding-top: 60%;"></div>
+            <div class="img-container mt-2 mt-lg-auto" style="background-image: url({{recipe.image}}); background-size: cover; padding-top: 60%; padding-left: 25%;"></div>
         </div>
     </div>
 </div>
 <!----------------------------------------------------------------CUISINE, DIET AND ALLERGIES-->
 <section class="row mt-4">
     <div class="mx-auto mt-3 col-12 text-center">
-        <div class="description p-2">
+        <div class="cuisine-diet-alergies p-2">
             <h4 class="text-center text-center-title section-heading-purple mt-3">Cuisine, Diet and Alergies</h4>
             <div class="mb-3">
-                <span class="font-weight-bold mr-1">Cuisine:</span> <span class="mr-4">{{recipe.cuisine}}</span> <span class="font-weight-bold mr-1">Diet:</span><span class="mr-4">{{recipe.diet }}</span>
-                <span class="font-weight-bold">Allergens:</span> {% for i in range(recipe.allergies|count) %}
-                <span class="mr-2">{{recipe.allergies[i]}}</span> {%endfor%}
+                <span class="font-weight-bold mr-1 light-blue">Cuisine:</span> <span class="mr-4"><strong>{{recipe.cuisine}}</strong></span> <span class="font-weight-bold mr-1 light-orange">Diet:</span><span class="mr-4"><strong>{{recipe.diet }}</strong></span>
+                <span class="font-weight-bold light-red light-red-underline">Allergens:</span> {% for i in range(recipe.allergies|count) %}
+                <span class="mr-2"><strong>{{recipe.allergies[i]}}</strong></span> {%endfor%}
             </div>
         </div>
     </div>
@@ -47,15 +66,17 @@
 <!----------------------------------------------------------------------INSTRUCTIONS-->
 <section class="row mt-4">
     <div class="col">
-        <div class="instructions-list clearfix p-2">
+        <div class="instructions clearfix p-2">
             <h3 class="text-center text-center-title mt-3 section-heading-purple">Instructions</h3>
-            <ul class="list-group">
+            <ol class="list-group" id="instructions-list">
                 {%for instruction in recipe.instructions%}
-                <li class="list-group-item instructions-list-item"><span class="float-left light-red mt-1"><i class="fas fa-hand-point-right ml-4"></i></span> {{instruction}}</li>
+                <li class="list-group-item instructions-list-item"><span class="float-center blue-text mt-1"><strong> {{instruction}}</strong></span>
+                </li>
+                <hr class="block-divider">
                 {%endfor%}
-            </ul>
-            <p class="mt-4 section-heading-purple float-right mr-4"><span class="fw-600 mr-1">Added by:</span>{{recipe.user}}</p>
+            </ol>
         </div>
+        <p class="mt-4 section-heading-purple float-right mr-4"><span class="fw-600 mr-1">Added by:</span>{{recipe.user}}</p>
     </div>
 </section>
 

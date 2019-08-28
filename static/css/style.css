@@ -3,10 +3,37 @@
 .mb-1 {
     color: #f5d011;
 }
+
 /*-----COLORS---*/
+
 .light-red {
-     color: #f28686;
+    color: #f28686;
 }
+
+.light-blue {
+    color: #00c4ff;
+}
+
+.blue-text {
+    color: #004085;
+}
+
+.light-orange {
+    color: #fdbe4b;
+}
+
+.orange-text {
+    color: #c38617;
+}
+
+.light-bg-red {
+    background-color: #f28686;
+}
+
+.whitesmoke {
+    color: whitesmoke;
+}
+
 /*----SECTION HEADING----*/
 
 .section-heading {
@@ -24,7 +51,7 @@
     background-color: #ea454f;
 }
 
-.section-heading-purple{
+.section-heading-purple {
     color: darkred;
 }
 
@@ -130,7 +157,13 @@
     margin-right: 10%;
 }
 
-/*----Giving some spaces to the bottom and sides for making nice view to the user---*/
+/*---------------------------------FAVOURITES----*/
+
+.favourites {
+    font-size: xx-large;
+}
+
+/*----Giving some spaces from top to bottom and sides for making nice view to the user---*/
 
 .bottom-page {
     position: fixed;
@@ -149,6 +182,19 @@
 .center-text-mypage {
     padding-top: 20%;
 }
+
+.border-row {
+    margin-left: 20%;
+}
+
+.center-cards {
+    margin-left: 18%;
+}
+
+.col-fix-btn {
+    padding-bottom: 50px;
+}
+
 /*-------RECIPES----*/
 
 .instructions-list-item {
@@ -163,6 +209,70 @@
 
 .list-group-item {
     border-color: transparent;
+}
+
+/*---------------------VIEW RECIPE---*/
+.light-blue, .light-orange, .light-red-underline {
+     text-decoration: underline;
+}
+/*----Ingredients----*/
+
+.ingredients {
+    background-color: #fff8d5;
+    border: 5px inset #ffc103e0;
+    border-radius: 50px;
+    margin: 2%;
+}
+
+ul#ingredients-list {
+    list-style: none;
+    padding: 0;
+    border: 2px inset #f8f9fa00;
+    border-radius: 50px;
+    margin: 2%;
+}
+
+.ingredients-list-item {
+    background-color: #fff8d5;
+}
+
+.orange-text {
+    text-decoration: underline;
+    text-shadow: 3px 2px 2px #22232536;
+}
+
+/*----Cuisine & Allergies----*/
+
+.cuisine-diet-alergies {
+    border: 7px inset palevioletred;
+    border-radius: 20px;
+    margin: 2%;
+}
+
+/*----Instructions---*/
+
+.instructions {
+    background-color: #e3e3ff;
+    border: 7px inset #00c4ff;
+    border-radius: 20px;
+    margin: 2%;
+}
+
+ol#instructions-list {
+    list-style: none;
+    padding: 0;
+    border: 2px inset #f8f9fa00;
+    border-radius: 50px;
+    margin: 2%;
+}
+
+.blue-text {
+    text-decoration: underline;
+    text-shadow: 3px 2px 2px #22232536;
+}
+
+.instructions-list-item {
+    background-color: #e3e3ff;
 }
 
 /*------------MEDIA---*/
@@ -182,7 +292,7 @@
     .center-text-mypage {
         padding-top: 20%;
     }
-    
+
     .background-mypage {
         background-color: #fff;
     }
@@ -199,10 +309,10 @@
         height: 90%;
         width: 100%;
     }
-    .margin-row{
+    .margin-row {
         margin-right: 0;
     }
-    .border-row{
+    .border-row {
         padding-left: 15%;
     }
     .center-text-mypage {

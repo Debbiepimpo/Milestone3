@@ -23,7 +23,7 @@
         <ul class="sidebar-nav">
           <li class="sidebar-brand">
             {% if session['user']%}
-            <a class="js-scroll-trigger" href="{{ url_for('myrecipes')}}"><span class="username-color"><i class="fas fa-book"></i>  {{session['user']}}</span></a> {%else%}
+            <a class="js-scroll-trigger" href="{{ url_for('myrecipes')}}"><span class="username-color"><i class="fas fa-user"></i>  {{session['user']}}</span></a> {%else%}
             <a class="js-scroll-trigger" href="{{ url_for('index')}}">My Cookbook</a> {%endif%}
           </li>
           <li class="sidebar-nav-item">
@@ -42,6 +42,9 @@
           <li class="sidebar-nav-item">
             <a class="js-scroll-triger" href="{{url_for('addrecipe')}}"><i class="fas fa-plus"></i> Add Recipe</a>
           </li>
+          <li class="sidebar-nav-item">
+            <a class="js-scroll-triger" href="{{url_for('myrecipes')}}"><i class="fas fa-book"></i> My Recipes</a>
+          </li>
           {% endif %}
           <li class="sidebar-nav-item">
             <a class="js-scroll-trigger" href="{{ url_for('favourites') }}">My Favourite Recipes</a>
@@ -51,7 +54,7 @@
             {% if request.path!='/recipes' %}
             <form method="GET" action="{{url_for('recipes')}}" class="form-inline my-2 my-lg-0">
               <input class="form-control-sm  mr-2" name="keyword" type="search" placeholder="Search" aria-label="Search" value="{{keyword if keyword }}">
-              <button class="btn btn-outline-light btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+              <button class="btn btn-outline-light btn-sm my-2 my-sm-0" type="submit" name="submit" value="Submit"><i class="fas fa-search"></i></button>
             </form>
             {%endif%}
           </li>

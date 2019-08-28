@@ -4,7 +4,7 @@
 </div>
 <div class="mt-4">
     <p class="font-weight-bold">Total Recipes: {{recipes_count}}</p>
-    
+
     <form action="{{url_for('recipes')}}" method="GET">
         <div class="form-row">
             <div class="form-group col-12 col-md-6 col-lg-3">
@@ -72,12 +72,12 @@
             <div class="img-container" style="background-image: url({{recipe['image']}}); background-size: cover; padding-top: 60%;"> </div>
             <h6 class="recipe-card text-under-line text-center text-truncate text-capitalize">{{recipe['recipeName']}}</h6>
         </a>
-    </div>
+</div>
 {% endif %} {%endfor%}
 </div>
 <div class="row mt-5">
     {% if page >1 %}
-    <div class="col">
+    <div class="col col-fix-btn">
         <form action="{{url_for('recipes',page=page-1)}}" method="GET">
             {%if keyword %}
             <input type="hidden" name="keyword" value="{{keyword}}" /> {% endif %} {% if 'browse' in filters %}
@@ -85,12 +85,12 @@
             <input type="hidden" value="{{filters['sort']}}" name="sort"> {% endif %}
 
             <div class="col clearfix">
-                <button type="submit" class="btn btn-link float-left" name="submit" value="previous-page">Previous Page</button>
+                <button type="submit" class="btn btn-link float-left light-bg-red" name="submit" value="previous-page"><i class="fas fa-chevron-left whitesmoke"></i></button>
             </div>
         </form>
     </div>
     {% endif %} {% if recipes_length > page_size %}
-    <div class="col">
+    <div class="col col-fix-btn">
         <form action="{{url_for('recipes',page=page+1)}}" method="GET">
             {% if keyword %}
             <input type="hidden" name="keyword" value="{{keyword}}" /> {% endif %} {% if 'browse' in filters %}
@@ -98,14 +98,15 @@
             <input type="hidden" value="{{filters['sort']}}" name="sort"> {% endif %}
 
             <div class="col clearfix">
-                <button type="submit" class="btn btn-link float-right" name="submit" value="next-page">Next Page</button>
+                <button type="submit" class="btn btn-link float-right light-bg-red" name="submit" value="next-page"><i class="fas fa-chevron-right whitesmoke"></i></button>
             </div>
         </form>
     </div>
     {%endif%}
+    <div class="col text-center mt-3 bottom-page span-text">
+        Current Page: {{page}}
+    </div>
 </div>
-<div class="col text-center mt-3 bottom-page span-text">
-    Current Page: {{page}}
-</div>
+
 
 {%endblock%}
