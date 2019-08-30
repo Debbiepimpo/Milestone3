@@ -36,7 +36,7 @@ The site should be responsive and work on all browsers.
 ## Wireframes
 
 
- * [Mobile Wireframes](hhttps://github.com/Debbiepimpo/Milestone3/tree/master/wireframes/mobile-wireframes)
+ * [Mobile Wireframes](https://github.com/Debbiepimpo/Milestone3/tree/master/wireframes/mobile-wireframes)
  * [Desktop Wireframes](https://github.com/Debbiepimpo/Milestone3/tree/master/wireframes/desktop-wireframes)
 
 
