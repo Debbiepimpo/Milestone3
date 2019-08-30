@@ -79,7 +79,7 @@ The content requirements for the functions proposed above would be as follows:
   * Add more info on recipes such as time cooking, how many people can eat if you follow a recipe, etc...
   * Implement that you can share recipes on your social media.
   * Add a delete pop up to ask the user if is sure to delete the recipe.
-  * Make the Sorty by lastest, oldest and favourite recipes work.
+  * Make the Sort by lastest, oldest and favourite recipes work.
 
 ## Technologies Used
 
