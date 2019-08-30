@@ -1,8 +1,8 @@
 # My Cookbook
 
-I have the pleasure of introducing my Data-Centric Development Project. My Cookbook was being created with Python, Flask and MnogoDB and the purpose of this project is to create an interactive database of recipes that allows the user to create, read, update and delete (CRUD) recipes and also to share with another users and add their favourites recipes to favourites. My Cookbook can only be used by registered users.
+I have the pleasure of introducing my Data-Centric Development Project. My Cookbook was being created with Python, Flask and MnogoDB and the purpose of this project is to create an interactive database of recipes that allows the user to create, read, update and delete (CRUD) recipes and also to share with another users and add their favourites recipes to favourites. My Cookbook can only be used by registered users but non-registered users can see any recipe if wanted.
 
-The idea of this website is to have an online storage for look up, create and save recipes. The idea of simplicity makes this website  easy to use with anything to guess for the interaction on it  b the user. The target users for My Cookbook is any one who has the necessity to store recipes online. Traditional media such as books or magazines are continously replaced by online resources and that's why having this online recipe book has many advantages.
+The idea of this website is to have an online storage for look up, create and save recipes. Also the simplicity makes this website  easy to use with anything to guess for the interaction on it  b the user. The target users for My Cookbook is any one who has the necessity to store recipes online. Traditional media such as books or magazines are continously replaced by online resources and that's why having this online recipe book has many advantages.
 
 ## Website Link
 
@@ -78,6 +78,8 @@ The content requirements for the functions proposed above would be as follows:
   * Add images for make instructions/ingredients easier to follow
   * Add more info on recipes such as time cooking, how many people can eat if you follow a recipe, etc...
   * Implement that you can share recipes on your social media.
+  * Add a delete pop up to ask the user if is sure to delete the recipe.
+  * Make the Sorty by lastest, oldest and favourite recipes work.
 
 ## Technologies Used
 
@@ -112,6 +114,7 @@ I made the automatically testing using the W3 HTML checker:
 
 * [W3C Validator](https://validator.w3.org/#validate_by_input) - For HTML
 * [JIGSAW W3C Validator](https://jigsaw.w3.org/css-validator/#validate_by_input) - For CSS
+
 ##### Chrome Dev Tools
 
 I used Dev Tools to check if there was an error on my page. 
@@ -174,8 +177,8 @@ the other fields are kep values from the database.
 * Test that when there are no recipes left the " next page" button is not displayed
 * Test that when there are no previous recipes to display left the "previous page" button is not displayed
 
-### Bugs
-Most of the bugs I encountered while developing this site, had to be realted with "My Favourites Recipes", how I stored them and how to reflect them with an icon. 
+### Debbuging
+Most of the bugs I found while developing this site, had to be realted with "My Favourites Recipes", how I stored them and how to reflect if the recipes were stored as favourites them with an icon. 
 
   Initially, when a User saved a recipe, that recipe wasn't store properly at mongoDB. When I fixed the issue about stored the recipe on favourites,the icon didn't fill. This was important to  display when the user add a recipe to favourites. 
   
@@ -204,10 +207,6 @@ The `Procfile` must be in your app’s root directory `echo web python app.py > 
 * Create a requirements.txt file `sudo pip3 freeze --local > requirements.txt`
 * To deploy `git push heroku master`
 * Set the `IP`,`PORT`, `SECRET_KEY` and any other environment variables in Heroku Account Settings
-
-
-## Credits
-
 
 ### Media 
 

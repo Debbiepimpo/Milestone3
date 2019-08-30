@@ -25,12 +25,14 @@
 {% endif %} {% endwith %}
 
 <div class="row mt-4 margin-row">
+     {% if session['user']%}
     <div class="col-12 md-auto">
         {% if favourite %}
         <a href="{{url_for('insertfavourite',recipe_id=recipe._id)}}" class="float-center favourites mt-1" id="fav" title="[+] Add as favorite"><i class="far fa-star ml-4 light-red"></i></a> {% else %}
-        <a href="{{url_for('removefavourite',recipe_id=recipe._id)}}" id="fav2" class="float-center favourites mt-1" title="[-] Remove as favorite"><i class="fas fa-star ml-4 light-red"></i></a> {% endif %}
+        <a href="{{url_for('removefavourite',recipe_id=recipe._id)}}" id="fav2" class="float-center favourites mt-1" title="[-] Remove as favorite"><i class="fas fa-star ml-4 light-red"></i></a>
+        {% endif %}
     </div>
-
+    {% endif %}
 </div>
 <!----------------------------------------------------------------INGREDIENTS-->
 <div class="row mt-4">

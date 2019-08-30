@@ -66,7 +66,7 @@ def register():
         
 @app.route('/mypage')
 def mypage():
-    recipes=mongo.db.recipes.find().sort('_id', -1).limit(3) #display the latest 6 recipes
+    recipes=mongo.db.recipes.find().sort('_id', -1).limit(3) #display the latest 3 recipes
     return render_template('mypage.html',recipes=recipes)
             
 @app.route('/recipes',defaults={'page': 1})
@@ -168,9 +168,8 @@ def recipes(page):
 @app.route('/myrecipes',defaults={'page':1})
 @app.route('/myrecipes/page/<page>')
 def myrecipes(page):
-    # If the user is not logged the page will be redirected to Login page.
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
+    
+    if not loggedOrNot():
         return redirect(url_for('sign_in'))
         
     # When the user is in session, the  username is stored on a variable
@@ -187,37 +186,18 @@ def myrecipes(page):
     page_size=9
     page=int(page)
     skips = page_size * (int(page) - 1)
+    global recipes_per_page
     recipes_per_page=recipes_total_user.skip(skips).limit(page_size + 1)
     recipes_length=recipes_per_page.count(True)
     
     return render_template('myrecipes.html',recipes=recipes_per_page,page_size=page_size,page=page,
             recipes_length=recipes_length,total_recipes=recipes_total_count,message=message)
 
-# The user will be able to delete exclusively his own recipes  
-@app.route('/del_recipe/<recipe_id>')
-def del_recipe(recipe_id):
-    # Make sure if the user is logged on.
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
-        return redirect(url_for('sign_in')) 
-    '''
-    This make sure if the user is logged with his username and check recipe if it match,
-    if the user is not logged, he will be redirected to sign_in. But if the user is logged 
-    and the recipe match with the recipe written under the username logged, the recipe will
-    be deleted and user will be redirected to the recipes on his own cookbook.
-    '''
-    user=session['user']    
-    recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
-    if recipe['user'] != user:
-        return redirect(url_for('sign_in'))
-    mongo.db.recipes.remove({'_id':ObjectId(recipe_id)})
-    flash('The recipe is now delete.')
-    return redirect(url_for('myrecipes'))
 
 @app.route('/editrecipe/<recipe_id>', methods = ['GET','POST'])
 def editrecipe(recipe_id):
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
+    
+    if not loggedOrNot():
         return redirect(url_for('sign_in')) 
     user = session['user']    
     recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
@@ -246,21 +226,30 @@ def editrecipe(recipe_id):
                         
 @app.route('/updaterecipe/<recipe_id>',methods=['GET','POST'])
 def updaterecipe(recipe_id):
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website.")
+    
+    if not loggedOrNot():
         return redirect(url_for('sign_in')) 
     
     message=""
-    keys=[] # This will store the keys from the fields that are empty
-    # Get the recipe from mongoDB
-    recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
-    # Take the data written into the form and convert into dictionary
-    recipes=request.form.to_dict()
+    keys=[] # It will store keys of empty fields
+
+    # This are the list from mongoDB
+    _measurements=mongo.db.measurements.find()
+    measurements=[measurement for measurement in _measurements]
+    _cuisine=mongo.db.cuisine.find()
+    cuisine=[cuisine for cuisine in _cuisine ]
+    _diet=mongo.db.diet.find()
+    diet=[diet for diet in _diet]
+    _allergies=mongo.db.allergies.find()
+    allergies=[allergy for allergy in _allergies]
+    
+    instructions = len(request.form.getlist("instructions"))
   
     ingredient_length=len(request.form.getlist("ingredientName[]"))
     instructions_length=len(request.form.getlist("instructions"))
     
-    # This will create an array with the name, the quantity and the measurements of each ingredient
+    # Array of tuples for each ingredient
+    recipe=request.form.to_dict()
     headers = ('name', 'quantity','measurements')
     values = (
         request.form.getlist('ingredientName[]'),
@@ -272,42 +261,43 @@ def updaterecipe(recipe_id):
         for _x,_i in enumerate(i):
             items[_x][headers[x]] = _i
     
-    # Take instructions and allergies writen into the form
     form_allergies = request.form.getlist("allergies[]")
-    print(form_allergies)
     form_instructions = request.form.getlist("instructions")
     
-    #Delete the name, the quantity and the measurements when this are not required by the format for mongoDB
-    del recipes["ingredientName[]"]
-    del recipes["ingredientQuantity[]"]
-    del recipes["ingredientMeasurements[]"]
-    del recipes["instructions"]
-   
-    # Put the data into the dictionary
-    recipes["ingredients"]=items
-    recipes["instructions"]=form_instructions
+    # To delete the extra lines of ingredients and instructions
+    del recipe["ingredientName[]"]
+    del recipe["ingredientQuantity[]"]
+    del recipe["ingredientMeasurements[]"]
+    del recipe["instructions"]
+    
     
     if form_allergies:
-        del recipes["allergies[]"]
-        recipes["allergies"]=form_allergies
+        del recipe["allergies[]"]
+        recipe["allergies"]=form_allergies
     else:
-        recipes["allergies"]=["None"]
-        
+        recipe["allergies"]=["None"]
+    
+    recipe["ingredients"]=items
+    recipe["instructions"]=form_instructions
+    recipe["user"]=session['user']
+    
+  
     if request.form.get('submit') == 'submit':
-        #If there's no image link provided a image settled as default will be used
-        if request.form["image"]=="":
-            request.form["image"]="../static/img/default.jpg"
-
+        
+        if recipe["image"]=="":
+            # If there's no image link provided a image settled as default will be used
+            recipe["image"]="http://sozkibris.com/wp-content/uploads/2017/10/3dbf0726e1dc41349d0.jpg"
+        
         # Check allergies, description and recipe name only, to make sure if the key length has a value equals to 0 
-        keys = [key for key,val in recipes.items() if not val]
-        # Check also ingredients and instructions
-        keys_ingredients = [val for val in recipes["ingredients"] if not val["measurements"] or not val["name"] or not val["quantity"]]
-        keys_instructions = [val for val in recipes["instructions"] if not val]
+        keys = [key for key,val in recipe.items() if not val]
+        # Check  also ingredients and instructions
+        keys_ingredients = [val for val in recipe["ingredients"] if not val["measurements"] or not val["name"] or not val["quantity"]]
+        keys_instructions = [val for val in recipe["instructions"] if not val]
          # If cuisine not able at the dictionary    
-        if 'cuisine' not in recipes:
+        if 'cuisine' not in recipe:
             keys.append('cuisine')
         # If diet is not able at the dictionary 
-        if 'diet' not in recipes:
+        if 'diet' not in recipe:
             keys.append('diet')
         # If ingredients and instructions have no values into the array, then it will contain empy keys
         if keys_ingredients:
@@ -318,8 +308,8 @@ def updaterecipe(recipe_id):
             message="This fields are required. Please fill them in."
         else:
             recipes=mongo.db.recipes
-            recipes.update_one({'_id': ObjectId(recipe_id)},{"$set":recipes})  
-            flash('The recipe has being updated')
+            recipes.update_one({'_id': ObjectId(recipe_id)},{"$set":recipe}) 
+            flash('The recipe has being added.')
             return redirect(url_for('myrecipes'))
         
     elif request.form.get('submit') == 'addInstruction':
@@ -330,35 +320,17 @@ def updaterecipe(recipe_id):
         instructions_length -= 1 
     elif request.form.get('submit') == 'del_ingredient':  
         ingredient_length -= 1
-    _diet=mongo.db.diet.find()
-    diet=[diet for diet in _diet]
-    _cuisine=mongo.db.cuisine.find()
-    cuisine=[cuisine for cuisine in _cuisine ]
-    _allergies=mongo.db.allergies.find()
-    allergies=[allergy for allergy in _allergies]
-    _measurements=mongo.db.measurements.find()
-    measurements=[unit for unit in _measurements]
     
-    recipes = mongo.db.recipes
-    recipe.update( {'_id': ObjectId(recipe_id)},
-    {
-        'user':request.form.get('user'),
-        'image':request.form.get('recipe_image'),
-        'recipeName': request.form.get('recipeName'),
-        'allergy_name': request.form.get('allergy_name'),
-        'cuisine_name':request.form.get('cuisine_name'),
-        'ingredients': request.form.get('ingredientName, ingredientQuantity, ingredientMeasurements'),
-        'instructions':request.form.get('instructions')
-    })
+    recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
     
-    return render_template('editrecipe.html',recipe=recipe,recipes=recipes,
+    return render_template('editrecipe.html',recipe=recipe,
                             _diet=diet,_cuisine=cuisine,
                             _allergies=allergies,measurements=measurements,
                             ingredient_length=ingredient_length,instructions_length=instructions_length,
                             keys=keys,message=message)
 
 @app.route('/addrecipe')
-def addrecipe():
+def addrecipe(): 
     if session.get('logged_in') is None:
         flash("Please login for getting full access to your website")
         return redirect(url_for('sign_in')) 
@@ -379,8 +351,8 @@ def addrecipe():
 
 @app.route('/insertrecipe', methods =["POST","GET"])
 def insertrecipe():
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
+    # If the user is not logged the page will be redirected to Login page.  
+    if not loggedOrNot():
         return redirect(url_for('sign_in')) 
     
     message=""
@@ -481,14 +453,13 @@ def insertrecipe():
 
 @app.route('/viewrecipe/<recipe_id>')
 def viewrecipe(recipe_id):
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
-        return redirect(url_for('sign_in')) 
-    
-    user=session['user']
+    # If the user is not logged the page will be redirected to Login page.  
+    exist=None
+    if loggedOrNot():
+        user=session['user']
+        exist=mongo.db.favourites.find_one({"recipe_id":recipe_id,"user":user})
     
     the_recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
-    exist=mongo.db.favourites.find_one({"recipe_id":recipe_id,"user":user})
     favouriteExist=False;
     if exist is None:
         favouriteExist=True
@@ -498,9 +469,8 @@ def viewrecipe(recipe_id):
 @app.route('/favourites',defaults={'page':1})
 @app.route('/favourites/page/<page>')
 def favourites(page):
-    # If the user is not logged the page will be redirected to Login page.
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
+    # If the user is not logged the page will be redirected to Login page.  
+    if not loggedOrNot():
         return redirect(url_for('sign_in'))
     
     # When the user is in session, the  username is stored on a variable
@@ -512,11 +482,17 @@ def favourites(page):
     message=""
     recipes_total_user=[]
     if favourites_total_count==0:
+        recipes_total_count=len(recipes_total_user)
         message="Sorry, there's no recipes to display"
+        page_size=9
+        page=int(page)
+        skips=page_size * (int(page) - 1)
+        recipes_per_page=recipes_total_user[skips:skips+(page_size + 1)]       
+        recipes_length=len(recipes_per_page)
     else:
         for favourite in favourites_total_user :
             recipes_total_user.append(mongo.db.recipes.find_one({"_id":ObjectId(favourite.get('recipe_id'))}))
-        recipes_total_count=len(recipes_total_user)
+            recipes_total_count=len(recipes_total_user)
 
         # It set how many recipes will be maximum display per page (same as the recipes above) 
         page_size=9
@@ -526,13 +502,13 @@ def favourites(page):
         recipes_length=len(recipes_per_page)
         
         
-    return render_template('favourites.html',recipes=recipes_per_page,page_size=page_size,page=page,
-            recipes_length=recipes_length,total_recipes=recipes_total_count,message=message)
+    return render_template('favourites.html',page_size=page_size,page=page,
+            recipes_length=recipes_length,total_recipes=recipes_total_count,recipes=recipes_per_page,message=message)
 
 @app.route('/insertfavourite/<recipe_id>', methods =["POST","GET"])
 def insertfavourite(recipe_id):
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
+    # If the user is not logged the page will be redirected to Login page.  
+    if not loggedOrNot():
         return redirect(url_for('sign_in')) 
     
     user=session['user']
@@ -547,8 +523,8 @@ def insertfavourite(recipe_id):
     
 @app.route('/removefavourite/<recipe_id>', methods =["POST","GET"])
 def removefavourite(recipe_id):
-    if session.get('logged_in') is None:
-        flash("Please login for getting full access to your website")
+    # If the user is not logged the page will be redirected to Login page.  
+    if not loggedOrNot():
         return redirect(url_for('sign_in')) 
     
     user=session['user']
@@ -561,7 +537,34 @@ def removefavourite(recipe_id):
     recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
     return render_template('viewrecipe.html',recipe=recipe,favourite=True)
     
+# The user will be able to delete exclusively his own recipes  
+@app.route('/del_recipe/<recipe_id>')
+def del_recipe(recipe_id):
     
+    if not loggedOrNot():
+        return redirect(url_for('sign_in')) 
+    '''
+    This make sure if the user is logged with his username and check recipe if it match,
+    if the user is not logged, he will be redirected to sign_in. But if the user is logged 
+    and the recipe match with the recipe written under the username logged, the recipe will
+    be deleted and user will be redirected to the recipes on his own cookbook.
+    '''
+    user=session['user']    
+    recipe=mongo.db.recipes.find_one({"_id":ObjectId(recipe_id)})
+    if recipe['user'] != user:
+        return redirect(url_for('sign_in'))
+    mongo.db.recipes.remove({'_id':ObjectId(recipe_id)})
+    mongo.db.favourites.remove({'recipe_id':recipe_id})
+    flash('The recipe is now delete.')
+    return redirect(url_for('myrecipes'))
+    
+# Check every function if the user is logged in, the function will make the apropiate action for the result given.
+def loggedOrNot():
+    if session.get('logged_in') is None:
+        flash("Please login for getting full access to your website")
+        return False
+    else:
+        return True
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
